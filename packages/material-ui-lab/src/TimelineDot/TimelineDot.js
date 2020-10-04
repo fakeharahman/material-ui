@@ -1,9 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useThemeVariants } from '@material-ui/styles';
 import { capitalize } from '@material-ui/core/utils';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useThemeVariants } from '@material-ui/core/styles';
 
 export const styles = (theme) => ({
   /* Styles applied to the root element. */
@@ -109,10 +108,12 @@ TimelineDot.propTypes = {
   className: PropTypes.string,
   /**
    * The dot can have a different colors.
+   * @default 'grey'
    */
   color: PropTypes.oneOf(['grey', 'inherit', 'primary', 'secondary']),
   /**
    * The dot can appear filled or outlined.
+   * @default 'filled'
    */
   variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
     PropTypes.oneOf(['filled', 'outlined']),

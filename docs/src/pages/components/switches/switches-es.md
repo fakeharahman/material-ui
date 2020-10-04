@@ -1,15 +1,19 @@
 ---
-title: Switch React component
+title: React Switch component
 components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
+githubLabel: 'component: Switch'
+materialDesign: 'https://material.io/components/selection-controls#switches'
 ---
 
 # Switch
 
-<p class="description">Switches toggle the state of a single setting on or off.</p>
+<p class="description">Los conmutadores alternan los estados de un solo ajuste.</p>
 
-[Switches](https://material.io/design/components/selection-controls.html#switches) are the preferred way to adjust settings on mobile. The option that the switch controls, as well as the state it’s in, should be made clear from the corresponding inline label.
+[Switches](https://material.io/design/components/selection-controls.html#switches) are the preferred way to adjust settings on mobile. La opcion controllada por el switch asi como el estado internmo de este, deben especificarse de manera clara en la etiqueta inline correspondiente.
 
-## Basic switches
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
+## Conmutadores Básicos
 
 {{"demo": "pages/components/switches/Switches.js"}}
 
@@ -21,7 +25,7 @@ components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
 
 ## Switches with FormGroup
 
-`FormGroup` es un contenedor muy útil usado para agrupar componentes de controles de selección que proporciona una API más sencilla. However, you are encouraged you to use [Checkboxes](/components/checkboxes/) instead if multiple related controls are required. (See: [When to use](#when-to-use)).
+`FormGroup` es un contenedor muy útil usado para agrupar componentes de controles de selección que proporciona una API más sencilla. However, you are encouraged you to use [Checkboxes](/components/checkboxes/) instead if multiple related controls are required. However, you are encouraged you to use [Checkboxes](/components/checkboxes/) instead if multiple related controls are required.
 
 {{"demo": "pages/components/switches/SwitchesGroup.js"}}
 
@@ -31,11 +35,11 @@ Here are some examples of customizing the component. You can learn more about th
 
 {{"demo": "pages/components/switches/CustomizedSwitches.js"}}
 
-🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/switch).
+🎨 Si estás buscando inspiración, puedes mirar [los ejemplos de MUI Treasury](https://mui-treasury.com/styles/switch).
 
 ## Tamaños
 
-Fancy smaller switches? Usa la propiedad `size`.
+Fancy smaller switches? Use the `size` prop.
 
 {{"demo": "pages/components/switches/SwitchesSize.js"}}
 
@@ -45,7 +49,7 @@ Puede cambiar la ubicación de la etiqueta:
 
 {{"demo": "pages/components/switches/FormControlLabelPosition.js"}}
 
-## When to use
+## Cuándo usarlo
 
 - [Checkboxes vs. Interruptores](https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8)
 

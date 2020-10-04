@@ -6,6 +6,7 @@ import { PopperProps } from '../Popper/Popper';
 export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /**
    * If `true`, adds an arrow to the tooltip.
+   * @default false
    */
   arrow?: boolean;
   /**
@@ -40,28 +41,40 @@ export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDiv
     tooltipPlacementBottom?: string;
   };
   /**
+   * Set to `true` if the `title` acts as an accessible description.
+   * By default the `title` acts as an accessible label for the child.
+   * @default false
+   */
+  describeChild?: boolean;
+  /**
    * Do not respond to focus events.
+   * @default false
    */
   disableFocusListener?: boolean;
   /**
    * Do not respond to hover events.
+   * @default false
    */
   disableHoverListener?: boolean;
   /**
    * Do not respond to long press touch events.
+   * @default false
    */
   disableTouchListener?: boolean;
   /**
    * The number of milliseconds to wait before showing the tooltip.
    * This prop won't impact the enter touch delay (`enterTouchDelay`).
+   * @default 100
    */
   enterDelay?: number;
   /**
    * The number of milliseconds to wait before showing the tooltip when one was already recently opened.
+   * @default 0
    */
   enterNextDelay?: number;
   /**
    * The number of milliseconds a user must touch the element before showing the tooltip.
+   * @default 700
    */
   enterTouchDelay?: number;
   /**
@@ -72,15 +85,18 @@ export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDiv
   /**
    * Makes a tooltip interactive, i.e. will not close when the user
    * hovers over the tooltip before the `leaveDelay` is expired.
+   * @default false
    */
   interactive?: boolean;
   /**
    * The number of milliseconds to wait before hiding the tooltip.
    * This prop won't impact the leave touch delay (`leaveTouchDelay`).
+   * @default 0
    */
   leaveDelay?: number;
   /**
    * The number of milliseconds after the user stops touching an element before hiding the tooltip.
+   * @default 1500
    */
   leaveTouchDelay?: number;
   /**
@@ -88,19 +104,20 @@ export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDiv
    *
    * @param {object} event The event source of the callback.
    */
-  onClose?: (event: React.ChangeEvent<{}>) => void;
+  onClose?: (event: React.SyntheticEvent | Event) => void;
   /**
    * Callback fired when the component requests to be open.
    *
    * @param {object} event The event source of the callback.
    */
-  onOpen?: (event: React.ChangeEvent<{}>) => void;
+  onOpen?: (event: React.SyntheticEvent) => void;
   /**
    * If `true`, the tooltip is shown.
    */
   open?: boolean;
   /**
    * Tooltip placement.
+   * @default 'bottom'
    */
   placement?:
     | 'bottom-end'
@@ -117,6 +134,7 @@ export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDiv
     | 'top';
   /**
    * The component used for the popper.
+   * @default Popper
    */
   PopperComponent?: React.ComponentType<PopperProps>;
   /**
@@ -130,6 +148,7 @@ export interface TooltipProps extends StandardProps<React.HTMLAttributes<HTMLDiv
   /**
    * The component used for the transition.
    * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
+   * @default Grow
    */
   TransitionComponent?: React.ComponentType<
     TransitionProps & { children?: React.ReactElement<any, any> }

@@ -16,15 +16,6 @@ Jeder Haltepunkt (ein Schlüssel) stimmt mit einer *festen* Bildschirmbreite (ei
 - ** lg, ** groß: 1280px
 - ** xl ** extra groß: 1920px
 
-These breakpoint values are used to determine breakpoint ranges. Ein Bereich beginnt mit dem Haltepunktwert einschließlich bis zum nächsten Haltepunktwert:
-
-```js
-Wert          |0px     600px    960px    1280px   1920px
-Schlüssel     |xs      sm       md       lg       xl
-Breite        |--------|--------|--------|--------|-------->
-Bereich       |   xs   |   sm   |   md   |   lg   |   xl
-```
-
 These values can be [customized](#custom-breakpoints).
 
 ## CSS-Medienabfragen
@@ -39,20 +30,10 @@ CSS media queries are the idiomatic approach to make your UI responsive. The the
 In der folgenden Demo ändern wir die Hintergrundfarbe (rot, blau & grün) basierend auf der Bildschirmbreite.
 
 ```jsx
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('lg')]: {
-      backgroundColor: green[500],
-    },
-  },
-});
+Wert          |0px     600px    960px    1280px   1920px
+Schlüssel     |xs      sm       md       lg       xl
+Breite        |--------|--------|--------|--------|-------->
+Bereich       |   xs   |   sm   |   md   |   lg   |   xl
 ```
 
 {{"demo": "pages/customization/breakpoints/MediaQuery.js"}}
@@ -79,7 +60,7 @@ function MyComponent(props) {
 export default withWidth()(MyComponent);
 ```
 
-In der folgenden Demo ändern wir das gerenderte DOM-Element (* em*, <u> u</u>, ~~ del ~~ & span) basierend auf der Bildschirmbreite.
+Weitere Informationen finden Sie auf der [ useMediaQuery](/components/use-media-query/) Seite.
 
 {{"demo": "pages/customization/breakpoints/WithWidth.js"}}
 
@@ -142,7 +123,34 @@ declare module "@material-ui/core/styles/createBreakpoints" {
 
 ### `theme.breakpoints.up(key) => media query`
 
-#### Argumente
+#### Parameter
+
+1. `key` (*String* | *Number*): Ein Haltepunkteschlüssel (`xs`, `sm`, etc.) oder eine Bildschirmbreite in pixel.
+
+#### Rückgabewerte
+
+`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
+
+#### Beispiele
+
+```js
+declare module "@material-ui/core/styles/createBreakpoints" {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    tablet: true; // adds the `tablet` breakpoint
+    laptop: true;
+    desktop: true;
+  }
+}
+```
+
+### `theme.breakpoints.down(key) => media query`
+
+#### Parameter
 
 1. `key` (*String* | *Number*): Ein Haltepunkteschlüssel (`xs`, `sm`, etc.) oder eine Bildschirmbreite in pixel.
 
@@ -165,11 +173,11 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.down(key) => media query`
+### `theme.breakpoints.only(key) => media query`
 
-#### Argumente
+#### Parameter
 
-1. `key` (*String* | *Number*): Ein Haltepunkteschlüssel (`xs`, `sm`, etc.) oder eine Bildschirmbreite in pixel.
+1. `key` (*String*): Ein Haltepunkteschlüssel (`xs`, `sm`, etc.).
 
 #### Rückgabewerte
 
@@ -191,11 +199,12 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.only(key) => media query`
+### `theme.breakpoints.between(start, end) => media query`
 
-#### Argumente
+#### Parameter
 
-1. `key` (*String*): Ein Haltepunkteschlüssel (`xs`, `sm`, etc.).
+1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
 
 #### Rückgabewerte
 
@@ -217,33 +226,6 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.between(start, end) => media query`
-
-#### Argumente
-
-1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-
-#### Rückgabewerte
-
-`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
-
-#### Beispiele
-
-```js
-const styles = theme => ({
-  root: {
-    backgroundColor: 'blue',
-    // Match [sm, md + 1)
-    //       [sm, lg)
-    //       [600px, 1280px[
-    [theme.breakpoints.between('sm', 'md')]: {
-      backgroundColor: 'red',
-    },
-  },
-});
-```
-
 ### `withWidth([options]) => higher-order component`
 
 Injizieren Sie eine `width` Eigenschaft. Die an sie übergebene Komponente wird nicht geändert. Stattdessen wird eine neue Komponente zurückgegeben. Diese `width` Haltepunkt-Eigenschaft entspricht der aktuellen Bildschirmbreite. Es kann einer der folgenden Haltepunkte sein:
@@ -256,12 +238,13 @@ Einige Implementierungsdetails, die interessant sein könnten:
 
 - Es leitet *nicht React statisch* Eigenschaften weiter, so dass dieser HOC "transparenter" ist. Es kann zum Beispiel verwendet werden, um eine `getInitialProps()` als statische Methode zu definieren (next.js).
 
-#### Argumente
+#### Parameter
 
-1. `options` (*Object* [optional]): 
-  - `options.withTheme ` (*Boolean* [optional]): Standardeinstellung ist `false`. Übergeben Sie das `Theme` Objekt als Eigenschaft an die Komponente.
-  - `options.noSSR ` (*Boolean* [optional]): Standardeinstellung ist `false`. Um den serverseitigen Renderingabgleich durchzuführen, muss er zweimal gerendert werden. Ein erstes Mal mit nichts und ein zweites Mal mit den Kind-Elementen. Dieser Zyklus mit zwei Durchgängen ist mit einem Nachteil verbunden. Die Benutzeroberfläche blinkt möglicherweise. Sie können dieses Flag auf ` true` setzen, wenn Sie kein serverseitiges Rendering durchführen.
-  - ` options.initialWidth ` (*Breakpoint* [optional]): Da ` window.innerWidth ` auf dem Server nicht verfügbar ist, wird eine leere Komponente während der ersten Mounts standardmäßig gerendert. Vielleicht mögen Sie eine Heuristik verwenden, um annähernd die Bildschirmbreite des Client-Browsers zu bestimmen. Sie könnten beispielsweise den Benutzeragenten oder die Client-Hinweise verwenden. Mit https://caniuse.com/#search=client%20hint, können wir die anfängliche Breite global festlegen, indem Sie die [`benutzerdefinierten Eigenschaften`](/customization/globals/#default-props) zum Theme verwenden. Um die Anfangsbreite festzulegen, müssen wir eine benutzerdefinierte Eigenschaft mit dieser Form übergeben:
+1. `options` (*Object* [optional]):
+
+- `options.withTheme` (*Boolean* [optional]): Standardeinstellung ist `false`. Übergeben Sie das `Theme` Objekt als Eigenschaft an die Komponente.
+- `options.noSSR` (*Boolean* [optional]): Standardeinstellung ist `false`. Um den serverseitigen Renderingabgleich durchzuführen, muss er zweimal gerendert werden. Ein erstes Mal mit nichts und ein zweites Mal mit den Kind-Elementen. Dieser Zyklus mit zwei Durchgängen ist mit einem Nachteil verbunden. Die Benutzeroberfläche blinkt möglicherweise. Sie können dieses Flag auf `true` setzen, wenn Sie kein serverseitiges Rendering durchführen.
+- `options.initialWidth` (*Breakpoint* [optional]): Da `window.innerWidth` auf dem Server nicht verfügbar ist, wird eine leere Komponente während der ersten Mounts standardmäßig gerendert. Vielleicht mögen Sie eine Heuristik verwenden, um annähernd die Bildschirmbreite des Client-Browsers zu bestimmen. Sie könnten beispielsweise den Benutzeragenten oder die Client-Hinweise verwenden. Mit https://caniuse.com/#search=client%20hint, können wir die anfängliche Breite global festlegen, indem Sie die [`benutzerdefinierten Eigenschaften`](/customization/globals/#default-props) zum Theme verwenden. Um die Anfangsbreite festzulegen, müssen wir eine benutzerdefinierte Eigenschaft mit dieser Form übergeben:
 
 ```js
 const theme = createMuiTheme({
@@ -270,7 +253,7 @@ const theme = createMuiTheme({
     MuiWithWidth: {
       // Initiale Breite
       initialWidth: 'lg', // Haltepunkte ist global gesetzt 🌎!
-    },
+      },
   },
 });
 ```

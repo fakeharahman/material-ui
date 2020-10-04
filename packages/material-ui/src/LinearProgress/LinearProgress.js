@@ -10,7 +10,7 @@ const TRANSITION_DURATION = 4; // seconds
 
 export const styles = (theme) => {
   const getColor = (color) =>
-    theme.palette.type === 'light' ? lighten(color, 0.62) : darken(color, 0.5);
+    theme.palette.mode === 'light' ? lighten(color, 0.62) : darken(color, 0.5);
 
   const backgroundPrimary = getColor(theme.palette.primary.main);
   const backgroundSecondary = getColor(theme.palette.secondary.main);
@@ -272,6 +272,7 @@ LinearProgress.propTypes = {
   className: PropTypes.string,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
+   * @default 'primary'
    */
   color: PropTypes.oneOf(['primary', 'secondary']),
   /**
@@ -287,6 +288,7 @@ LinearProgress.propTypes = {
   /**
    * The variant to use.
    * Use indeterminate or query when there is no progress value.
+   * @default 'indeterminate'
    */
   variant: PropTypes.oneOf(['buffer', 'determinate', 'indeterminate', 'query']),
 };

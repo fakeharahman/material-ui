@@ -1,15 +1,13 @@
 import * as React from 'react';
+import { OverridableStringUnion } from '@material-ui/types';
 import { OverridableComponent, OverrideProps } from '../OverridableComponent';
 
+export interface ImageListPropsVariantOverrides {}
+export type ImageListVariantDefaults = Record<'masonry' | 'quilted' | 'standard' | 'woven', true>;
 export interface ImageListTypeMap<P = {}, D extends React.ElementType = 'ul'> {
   props: P & {
     /**
-     * Number of px for one cell height.
-     * You can set `'auto'` if you want to let the children determine the height.
-     */
-    cellHeight?: number | 'auto';
-    /**
-     * Image Tiles that will be in Image List.
+     * Items that will be in the image list.
      */
     children: NonNullable<React.ReactNode>;
     /**
@@ -18,15 +16,35 @@ export interface ImageListTypeMap<P = {}, D extends React.ElementType = 'ul'> {
     classes?: {
       /** Styles applied to the root element. */
       root?: string;
+      /** Styles applied to the root element if `variant="masonry"`. */
+      masonry?: string;
+      /** Styles applied to the root element if `variant="quilted"`. */
+      quilted?: string;
+      /** Styles applied to the root element if `variant="standard"`. */
+      standard?: string;
+      /** Styles applied to the root element if `variant="woven"`. */
+      woven?: string;
     };
     /**
      * Number of columns.
+     * @default 2
      */
     cols?: number;
     /**
-     * Number of px for the spacing between tiles.
+     * The gap between items in px.
+     * @default 4
      */
-    spacing?: number;
+    gap?: number;
+    /**
+     * The height of one row in px.
+     * @default 'auto'
+     */
+    rowHeight?: number | 'auto';
+    /**
+     * The variant to use.
+     * @default 'standard'
+     */
+    variant?: OverridableStringUnion<ImageListVariantDefaults, ImageListPropsVariantOverrides>;
   };
   defaultComponent: D;
 }

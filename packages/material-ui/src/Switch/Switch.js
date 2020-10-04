@@ -40,7 +40,7 @@ export const styles = (theme) => ({
     top: 0,
     left: 0,
     zIndex: 1, // Render above the focus ripple.
-    color: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[400],
+    color: theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.grey[400],
     transition: theme.transitions.create(['left', 'transform'], {
       duration: theme.transitions.duration.shortest,
     }),
@@ -48,13 +48,13 @@ export const styles = (theme) => ({
       transform: 'translateX(20px)',
     },
     '&$disabled': {
-      color: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
+      color: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
     },
     '&$checked + $track': {
       opacity: 0.5,
     },
     '&$disabled + $track': {
-      opacity: theme.palette.type === 'light' ? 0.12 : 0.1,
+      opacity: theme.palette.mode === 'light' ? 0.12 : 0.1,
     },
   },
   /* Styles applied to the internal SwitchBase component's root element if `color="primary"`. */
@@ -69,14 +69,14 @@ export const styles = (theme) => ({
       },
     },
     '&$disabled': {
-      color: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
+      color: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
     },
     '&$checked + $track': {
       backgroundColor: theme.palette.primary.main,
     },
     '&$disabled + $track': {
       backgroundColor:
-        theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+        theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
   },
   /* Styles applied to the internal SwitchBase component's root element if `color="secondary"`. */
@@ -91,14 +91,14 @@ export const styles = (theme) => ({
       },
     },
     '&$disabled': {
-      color: theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
+      color: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[800],
     },
     '&$checked + $track': {
       backgroundColor: theme.palette.secondary.main,
     },
     '&$disabled + $track': {
       backgroundColor:
-        theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+        theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
   },
   /* Styles applied to the root element if `size="small"`. */
@@ -144,8 +144,8 @@ export const styles = (theme) => ({
       duration: theme.transitions.duration.shortest,
     }),
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-    opacity: theme.palette.type === 'light' ? 0.38 : 0.3,
+      theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white,
+    opacity: theme.palette.mode === 'light' ? 0.38 : 0.3,
   },
 });
 
@@ -214,6 +214,7 @@ Switch.propTypes = {
   className: PropTypes.string,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
+   * @default 'secondary'
    */
   color: PropTypes.oneOf(['default', 'primary', 'secondary']),
   /**
@@ -233,6 +234,7 @@ Switch.propTypes = {
    * side (this is often helpful for aligning the left or right
    * side of the icon with content above or below, without ruining the border
    * size and shape).
+   * @default false
    */
   edge: PropTypes.oneOf(['end', 'start', false]),
   /**
@@ -266,6 +268,7 @@ Switch.propTypes = {
   /**
    * The size of the switch.
    * `small` is equivalent to the dense switch styling.
+   * @default 'medium'
    */
   size: PropTypes.oneOf(['medium', 'small']),
   /**

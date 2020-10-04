@@ -28,6 +28,9 @@ export const styles = (theme) => ({
   },
   /* Styles applied to the `Typography` component which wraps `children`. */
   label: {
+    transition: theme.transitions.create('color', {
+      duration: theme.transitions.duration.shortest,
+    }),
     '&$active': {
       color: theme.palette.text.primary,
       fontWeight: 500,
@@ -162,6 +165,7 @@ StepLabel.propTypes = {
   className: PropTypes.string,
   /**
    * Mark the step as failed.
+   * @default false
    */
   error: PropTypes.bool,
   /**

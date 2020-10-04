@@ -1,11 +1,14 @@
 ---
-title: Pagination React component
+title: React Pagination component
 components: Pagination, PaginationItem
+githubLabel: 'component: Pagination'
 ---
 
 # Pagination
 
 <p class="description">Le composant Pagination permet à l'utilisateur de sélectionner une page spécifique à partir d'une plage de pages.</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Pagination de base
 
@@ -48,7 +51,7 @@ Vous pouvez spécifier le nombre de chiffres à afficher de chaque côté de la 
 Pour les cas d'utilisation de personnalisation avancée, nous exposons un hook `usePagination()`. Il accepte presque les mêmes options que le composant de Pagination moins tous les propriétés liés au rendu de JSX. Le composant de Pagination utilise ce hook en interne.
 
 ```jsx
-import { usePagination } from '@material-ui/lab/Pagination';
+import { usePagination } from '@material-ui/core/Pagination';
 ```
 
 {{"demo": "pages/components/pagination/UsePagination.js"}}
@@ -60,6 +63,8 @@ The `Pagination` component was designed to paginate a list of arbitrary items wh
 For the pagination of a large set of tabular data, you should use the `TablePagination` component.
 
 {{"demo": "pages/components/pagination/TablePagination.js"}}
+
+> ⚠️ Note that the `Pagination` page prop starts at 1 to match the requirement of including the value in the URL, while the `TablePagination` page prop stats at 0 to match the requirement of zero-based JavaScript arrays that comes with rendering a lot of tabular data.
 
 You can learn more about this use case in the [table section](/components/tables/#custom-pagination-options) of the documentation.
 

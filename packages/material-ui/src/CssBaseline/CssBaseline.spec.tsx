@@ -3,11 +3,11 @@ import { createMuiTheme } from '@material-ui/core';
 // overrides story
 {
   // reduced example from
-  // https://github.com/mui-org/material-ui/blob/next/docs/src/pages/customization/typography/typography.md
+  // https://github.com/mui-org/material-ui/blob/HEAD/docs/src/pages/customization/typography/typography.md
   createMuiTheme({
     components: {
       MuiCssBaseline: {
-        overrides: {
+        styleOverrides: {
           '@global': {
             '@font-face': [{ fontFamily: 'custom', fontWeight: 600 }],
           },
@@ -19,7 +19,7 @@ import { createMuiTheme } from '@material-ui/core';
   createMuiTheme({
     components: {
       MuiCssBaseline: {
-        overrides: {
+        styleOverrides: {
           '@global': {
             // @ts-expect-error
             fontWeight: 'bold',
@@ -32,7 +32,7 @@ import { createMuiTheme } from '@material-ui/core';
   createMuiTheme({
     components: {
       MuiCssBaseline: {
-        overrides: {
+        styleOverrides: {
           '@global': {
             ul: {
               'list-style': 'none',

@@ -26,7 +26,7 @@ export const styles = (theme) => ({
   colorDefault: {
     color: theme.palette.background.default,
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[600],
+      theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600],
   },
   /* Styles applied to the root element if `variant="circular"`. */
   circular: {},
@@ -210,6 +210,7 @@ Avatar.propTypes = {
   srcSet: PropTypes.string,
   /**
    * The shape of the avatar.
+   * @default 'circular'
    */
   variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
     PropTypes.oneOf(['circular', 'rounded', 'square']),

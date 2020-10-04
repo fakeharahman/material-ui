@@ -40,7 +40,7 @@ import { Button, TextField } from '@material-ui/core';
 
 This is the option we document in all the demos, since it requires no configuration. It is encouraged for library authors extending the components. Head to [Option 2](#option-2) for the approach that yields the best DX and UX.
 
-Beim direkten Importieren auf diese Weise werden die Exporte in [`@material-ui/core/index.js`](https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/index.js) nicht verwendet. Diese Datei kann trotzdem als praktische Referenz für die öffentlichen Module dienen.
+While importing directly in this manner doesn't use the exports in [the main file of `@material-ui/core`](https://unpkg.com/@material-ui/core), this file can serve as a handy reference as to which modules are public.
 
 Be aware that we only support first and second level imports. Anything deeper is considered private and can cause issues, such as module duplication in your bundle.
 
@@ -82,6 +82,7 @@ This option provides the best User Experience and Developer Experience:
 - UX: The Babel plugin enables top level tree-shaking even if your bundler doesn't support it.
 - DX: The Babel plugin makes startup time in dev mode as fast as Option 1.
 - DX: This syntax reduces the duplication of code, requiring only a single import for multiple modules. Overall, the code is easier to read, and you are less likely to make a mistake when importing a new module.
+
 ```js
 import { Button, TextField } from '@material-ui/core';
 ```
@@ -155,53 +156,53 @@ Wählen Sie eines der folgenden Plugins:
 
 If you are using Create React App, you will need to use a couple of projects that let you use `.babelrc` configuration, without ejecting.
 
-  `yarn add -D react-app-rewired customize-cra`
+`yarn add -D react-app-rewired customize-cra`
 
-  Create a `config-overrides.js` file in the root directory:
+Create a `config-overrides.js` file in the root directory:
 
-  ```js
-  /* config-overrides.js */
+```js
+/* config-overrides.js */
   const { useBabelRc, override } = require('customize-cra')
 
   module.exports = override(
     useBabelRc()
   );
-  ```
+```
 
-  If you wish, `babel-plugin-import` can be configured through `config-overrides.js` instead of `.babelrc` by using this [configuration](https://github.com/arackaf/customize-cra/blob/master/api.md#fixbabelimportslibraryname-options).
+If you wish, `babel-plugin-import` can be configured through `config-overrides.js` instead of `.babelrc` by using this [configuration](https://github.com/arackaf/customize-cra/blob/master/api.md#fixbabelimportslibraryname-options).
 
-  Modify your `package.json` start command:
+Modify your `package.json` start command:
 
 ```diff
   "scripts": {
--  "start": "react-scripts start"
+- "start": "react-scripts start"
 +  "start": "react-app-rewired start"
   }
 ```
 
-  Note: You may run into errors like these:
+Note: You may run into errors like these:
 
-  > Module not found: Can't resolve '@material-ui/core/makeStyles' in '/your/project'
+> Module not found: Can't resolve '@material-ui/core/makeStyles' in '/your/project'
 
-  This is because `@material-ui/styles` is re-exported through `core`, but the full import is not allowed.
+This is because `@material-ui/styles` is re-exported through `core`, but the full import is not allowed.
 
-  You have an import like this in your code:
+You have an import like this in your code:
 
-  ```js
-  import { makeStyles, createStyles } from '@material-ui/core';
-  ```
+```js
+import { makeStyles, createStyles } from '@material-ui/core';
+```
 
-  The fix is simple, define the import separately:
+The fix is simple, define the import separately:
 
-  ```js
-  import { makeStyles, createStyles } from '@material-ui/core/styles';
-  ```
+```js
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+```
 
-  Enjoy significantly faster start times.
+Enjoy significantly faster start times.
 
 #### 2. Convert all your imports
 
-Finally, you can convert your existing codebase to this option with this [top-level-imports](https://github.com/mui-org/material-ui/blob/next/packages/material-ui-codemod/README.md#top-level-imports) codemod. It will perform the following diffs:
+Finally, you can convert your existing codebase to this option with this [top-level-imports codemod](https://www.npmjs.com/package/@material-ui/codemod#top-level-imports). It will perform the following diffs:
 
 ```diff
 -import Button from '@material-ui/core/Button';

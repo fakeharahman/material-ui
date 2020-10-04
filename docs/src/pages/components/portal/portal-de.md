@@ -1,6 +1,7 @@
 ---
-title: Portal React-Komponente
+title: React Portal component
 components: Portal
+githubLabel: 'component: Portal'
 ---
 
 # Portal
@@ -10,6 +11,8 @@ components: Portal
 - 📦 [1.3 kB gzipped](/size-snapshot)
 
 Die untergeordneten Elemente der Portalkomponente werden an den angegebenen `Container` angehängt. Die Komponente wird intern von den Komponenten [`Modal`](/components/modal/) und [`Popper`](/components/popper/) benutzt.
+
+Die Style-Funktion der [Palette](/system/palette/).
 
 ## Beispiel
 

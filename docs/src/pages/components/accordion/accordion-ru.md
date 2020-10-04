@@ -1,6 +1,9 @@
 ---
-title: Панель расширения (Компонент React)
+title: React Accordion component
 components: Accordion, AccordionActions, AccordionDetails, AccordionSummary
+githubLabel: 'component: Accordion'
+materialDesign: https://material.io/archive/guidelines/components/expansion-panels.html
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#accordion'
 ---
 
 # Accordion (панель расширения)
@@ -9,13 +12,15 @@ components: Accordion, AccordionActions, AccordionDetails, AccordionSummary
 
 [Accordion](https://material.io/archive/guidelines/components/expansion-panels.html) это простой контейнер, который может использоваться отдельно, либо как часть более крупного компонента, такого как Card (карточка).
 
-> **Note:** Expansion panels are no longer documented in the [Material Design guidelines](https://material.io/), but Material-UI will continue to support them.
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
+> **Note:** Expansion panels are no longer documented in the [Material Design guidelines](https://material.io/), but Material-UI will continue to support them. It was formerly known as the "expansion panel".
 
 ## Простая Accordion
 
 {{"demo": "pages/components/accordion/SimpleAccordion.js", "bg": true}}
 
-## Контролируемый "Аккордеон"
+## Контролируемый аккордеон
 
 Используя компонент `Accordion`, расширив его поведение по умолчанию, можно получить "аккордеон".
 
@@ -42,12 +47,6 @@ In order to put an action such as a `Checkbox` or a button inside of the `Accord
 ```
 
 Как и при любой оптимизации производительности, не стоит переоценивать её. Сначала идентифицируйте узкие места и лишь затем пытайтесь применить эти стратегии.
-
-## Подзаголовок и столбцы
-
-Содержимое панели можно структурировать, сгруппировав его в отдельные столбцы, кроме того можно добавить подзаголовок и подсказки для пользователя.
-
-{{"demo": "pages/components/accordion/DetailedAccordion.js", "bg": true}}
 
 ## Доступность
 

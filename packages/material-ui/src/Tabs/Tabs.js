@@ -50,9 +50,18 @@ export const styles = (theme) => ({
     overflowX: 'hidden',
     width: '100%',
   },
-  /* Styles applied to the tablist element if `variant="scrollable"`. */
-  scrollable: {
-    overflowX: 'scroll',
+  /* Styles applied to the tablist element if `variant="scrollable"` and `orientation="horizontal"`. */
+  scrollableX: {
+    overflowX: 'auto',
+    overflowY: 'hidden',
+  },
+  /* Styles applied to the tablist element if `variant="scrollable"` and `orientation="vertical"`. */
+  scrollableY: {
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  /* Styles applied to the tablist element if `variant="scrollable"` and `visibleScrollbar={false}`. */
+  hideScrollbar: {
     // Hide dimensionless scrollbar on MacOS
     scrollbarWidth: 'none', // Firefox
     '&::-webkit-scrollbar': {
@@ -61,9 +70,9 @@ export const styles = (theme) => ({
   },
   /* Styles applied to the `ScrollButtonComponent` component. */
   scrollButtons: {},
-  /* Styles applied to the `ScrollButtonComponent` component if `scrollButtons="auto"` or scrollButtons="desktop"`. */
-  scrollButtonsDesktop: {
-    [theme.breakpoints.down('xs')]: {
+  /* Styles applied to the `ScrollButtonComponent` component if `allowScrollButtonsMobile={true}`. */
+  scrollButtonsHideMobile: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },
@@ -81,6 +90,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
     classes,
     className,
     component: Component = 'div',
+    allowScrollButtonsMobile = false,
     indicatorColor = 'secondary',
     onChange,
     orientation = 'horizontal',
@@ -92,6 +102,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
     textColor = 'inherit',
     value,
     variant = 'standard',
+    visibleScrollbar = false,
     ...other
   } = props;
   const theme = useTheme();
@@ -123,7 +134,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
 
   const [scrollerStyle, setScrollerStyle] = React.useState({
     overflow: 'hidden',
-    marginBottom: null,
+    scrollbarWidth: 0,
   });
 
   const valueToIndex = new Map();
@@ -229,33 +240,51 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
     scroll(scrollValue);
   };
 
+  const getScrollSize = () => {
+    const containerSize = tabsRef.current[clientSize];
+    let totalSize = 0;
+    const children = Array.from(tabListRef.current.children);
+
+    for (let i = 0; i < children.length; i += 1) {
+      const tab = children[i];
+      if (totalSize + tab[clientSize] > containerSize) {
+        break;
+      }
+      totalSize += tab[clientSize];
+    }
+    return totalSize;
+  };
+
   const handleStartScrollClick = () => {
-    moveTabsScroll(-tabsRef.current[clientSize]);
+    moveTabsScroll(-1 * getScrollSize());
   };
 
   const handleEndScrollClick = () => {
-    moveTabsScroll(tabsRef.current[clientSize]);
+    moveTabsScroll(getScrollSize());
   };
 
-  const handleScrollbarSizeChange = React.useCallback((scrollbarHeight) => {
+  // TODO Remove <ScrollbarSize /> as browser support for hidding the scrollbar
+  // with CSS improves.
+  const handleScrollbarSizeChange = React.useCallback((scrollbarWidth) => {
     setScrollerStyle({
       overflow: null,
-      marginBottom: -scrollbarHeight,
+      scrollbarWidth,
     });
   }, []);
 
   const getConditionalElements = () => {
     const conditionalElements = {};
+
     conditionalElements.scrollbarSizeListener = scrollable ? (
-      <ScrollbarSize className={classes.scrollable} onChange={handleScrollbarSizeChange} />
+      <ScrollbarSize
+        onChange={handleScrollbarSizeChange}
+        className={clsx(classes.scrollableX, classes.hideScrollbar)}
+      />
     ) : null;
 
     const scrollButtonsActive = displayScroll.start || displayScroll.end;
     const showScrollButtons =
-      scrollable &&
-      ((scrollButtons === 'auto' && scrollButtonsActive) ||
-        scrollButtons === 'desktop' ||
-        scrollButtons === 'on');
+      scrollable && ((scrollButtons === 'auto' && scrollButtonsActive) || scrollButtons === true);
 
     conditionalElements.scrollButtonStart = showScrollButtons ? (
       <ScrollButtonComponent
@@ -264,7 +293,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
         onClick={handleStartScrollClick}
         disabled={!displayScroll.start}
         className={clsx(classes.scrollButtons, {
-          [classes.scrollButtonsDesktop]: scrollButtons !== 'on',
+          [classes.scrollButtonsHideMobile]: !allowScrollButtonsMobile,
         })}
         {...TabScrollButtonProps}
       />
@@ -277,7 +306,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
         onClick={handleEndScrollClick}
         disabled={!displayScroll.end}
         className={clsx(classes.scrollButtons, {
-          [classes.scrollButtonsDesktop]: scrollButtons !== 'on',
+          [classes.scrollButtonsHideMobile]: !allowScrollButtonsMobile,
         })}
         {...TabScrollButtonProps}
       />
@@ -305,7 +334,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
   });
 
   const updateScrollButtonState = useEventCallback(() => {
-    if (scrollable && scrollButtons !== 'off') {
+    if (scrollable && scrollButtons !== false) {
       const { scrollTop, scrollHeight, clientHeight, scrollWidth, clientWidth } = tabsRef.current;
       let showStartScroll;
       let showEndScroll;
@@ -419,6 +448,7 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
       onChange,
       textColor,
       value: childValue,
+      ...(childIndex === 1 && value === false && !child.props.tabIndex ? { tabIndex: 0 } : {}),
     });
   });
 
@@ -483,9 +513,16 @@ const Tabs = React.forwardRef(function Tabs(props, ref) {
       <div
         className={clsx(classes.scroller, {
           [classes.fixed]: !scrollable,
-          [classes.scrollable]: scrollable,
+          [classes.hideScrollbar]: scrollable && !visibleScrollbar,
+          [classes.scrollableX]: scrollable && !vertical,
+          [classes.scrollableY]: scrollable && vertical,
         })}
-        style={scrollerStyle}
+        style={{
+          overflow: scrollerStyle.overflow,
+          [vertical ? `margin${isRtl ? 'Left' : 'Right'}` : 'marginBottom']: visibleScrollbar
+            ? undefined
+            : -scrollerStyle.scrollbarWidth,
+        }}
         ref={tabsRef}
         onScroll={handleTabsScroll}
       >
@@ -527,6 +564,12 @@ Tabs.propTypes = {
    */
   action: refType,
   /**
+   * If `true`, the scroll buttons aren't forced hidden on mobile.
+   * By default the scroll buttons are hidden on mobile and takes precedence over `scrollButtons`.
+   * @default false
+   */
+  allowScrollButtonsMobile: PropTypes.bool,
+  /**
    * The label for the Tabs as a string.
    */
   'aria-label': PropTypes.string,
@@ -537,6 +580,7 @@ Tabs.propTypes = {
   /**
    * If `true`, the tabs will be centered.
    * This prop is intended for large views.
+   * @default false
    */
   centered: PropTypes.bool,
   /**
@@ -558,6 +602,7 @@ Tabs.propTypes = {
   component: PropTypes.elementType,
   /**
    * Determines the color of the indicator.
+   * @default 'secondary'
    */
   indicatorColor: PropTypes.oneOf(['primary', 'secondary']),
   /**
@@ -569,21 +614,26 @@ Tabs.propTypes = {
   onChange: PropTypes.func,
   /**
    * The tabs orientation (layout flow direction).
+   * @default 'horizontal'
    */
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   /**
    * The component used to render the scroll buttons.
+   * @default TabScrollButton
    */
   ScrollButtonComponent: PropTypes.elementType,
   /**
    * Determine behavior of scroll buttons when tabs are set to scroll:
    *
    * - `auto` will only present them when not all the items are visible.
-   * - `desktop` will only present them on medium and larger viewports.
-   * - `on` will always present them.
-   * - `off` will never present them.
+   * - `true` will always present them.
+   * - `false` will never present them.
+   *
+   * By default the scroll buttons are hidden on mobile.
+   * This behavior can be disabled with `allowScrollButtonsMobile`.
+   * @default 'auto'
    */
-  scrollButtons: PropTypes.oneOf(['auto', 'desktop', 'off', 'on']),
+  scrollButtons: PropTypes /* @typescript-to-proptypes-ignore */.oneOf(['auto', false, true]),
   /**
    * If `true` the selected tab changes on focus. Otherwise it only
    * changes on activation.
@@ -591,6 +641,7 @@ Tabs.propTypes = {
   selectionFollowsFocus: PropTypes.bool,
   /**
    * Props applied to the tab indicator element.
+   * @default  {}
    */
   TabIndicatorProps: PropTypes.object,
   /**
@@ -599,6 +650,7 @@ Tabs.propTypes = {
   TabScrollButtonProps: PropTypes.object,
   /**
    * Determines the color of the `Tab`.
+   * @default 'inherit'
    */
   textColor: PropTypes.oneOf(['inherit', 'primary', 'secondary']),
   /**
@@ -614,8 +666,15 @@ Tabs.propTypes = {
    *  -`fullWidth` will make the tabs grow to use all the available space,
    *  which should be used for small views, like on mobile.
    *  - `standard` will render the default state.
+   * @default 'standard'
    */
   variant: PropTypes.oneOf(['fullWidth', 'scrollable', 'standard']),
+  /**
+   * If `true`, the scrollbar will be visible. It can be useful when displaying
+   * a long vertical list of tabs.
+   * @default false
+   */
+  visibleScrollbar: PropTypes.bool,
 };
 
 export default withStyles(styles, { name: 'MuiTabs' })(Tabs);

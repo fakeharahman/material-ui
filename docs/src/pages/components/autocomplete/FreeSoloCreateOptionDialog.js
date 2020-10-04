@@ -9,7 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Autocomplete, {
   createFilterOptions,
-} from '@material-ui/lab/Autocomplete';
+} from '@material-ui/core/Autocomplete';
 
 const filter = createFilterOptions();
 
@@ -92,7 +92,7 @@ export default function FreeSoloCreateOptionDialog() {
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
-        renderOption={(option) => option.title}
+        renderOption={(props, option) => <li {...props}>{option.title}</li>}
         style={{ width: 300 }}
         freeSolo
         renderInput={(params) => (

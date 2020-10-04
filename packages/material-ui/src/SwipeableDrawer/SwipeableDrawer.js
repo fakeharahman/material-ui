@@ -492,18 +492,21 @@ const SwipeableDrawer = React.forwardRef(function SwipeableDrawer(inProps, ref) 
     if (variant === 'temporary') {
       const doc = ownerDocument(paperRef.current);
       doc.addEventListener('touchstart', handleBodyTouchStart);
-      doc.addEventListener('touchmove', handleBodyTouchMove, { passive: false });
+      // A blocking listener prevents Firefox's navbar to auto-hide on scroll.
+      // It only needs to prevent scrolling on the drawer's content when open.
+      // When closed, the overlay prevents scrolling.
+      doc.addEventListener('touchmove', handleBodyTouchMove, { passive: !open });
       doc.addEventListener('touchend', handleBodyTouchEnd);
 
       return () => {
         doc.removeEventListener('touchstart', handleBodyTouchStart);
-        doc.removeEventListener('touchmove', handleBodyTouchMove, { passive: false });
+        doc.removeEventListener('touchmove', handleBodyTouchMove, { passive: !open });
         doc.removeEventListener('touchend', handleBodyTouchEnd);
       };
     }
 
     return undefined;
-  }, [variant, handleBodyTouchStart, handleBodyTouchMove, handleBodyTouchEnd]);
+  }, [variant, open, handleBodyTouchStart, handleBodyTouchMove, handleBodyTouchEnd]);
 
   React.useEffect(
     () => () => {
@@ -577,16 +580,19 @@ SwipeableDrawer.propTypes = {
   /**
    * Disable the backdrop transition.
    * This can improve the FPS on low-end devices.
+   * @default false
    */
   disableBackdropTransition: PropTypes.bool,
   /**
    * If `true`, touching the screen near the edge of the drawer will not slide in the drawer a bit
    * to promote accidental discovery of the swipe gesture.
+   * @default false
    */
   disableDiscovery: PropTypes.bool,
   /**
    * If `true`, swipe to open is disabled. This is useful in browsers where swiping triggers
    * navigation actions. Swipe to open is disabled on iOS browsers by default.
+   * @default typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
    */
   disableSwipeToOpen: PropTypes.bool,
   /**
@@ -596,12 +602,14 @@ SwipeableDrawer.propTypes = {
   /**
    * Affects how far the drawer must be opened/closed to change his state.
    * Specified as percent (0-1) of the width of the drawer
+   * @default 0.52
    */
   hysteresis: PropTypes.number,
   /**
    * Defines, from which (average) velocity on, the swipe is
    * defined as complete although hysteresis isn't reached.
    * Good threshold is between 250 - 1000 px/s
+   * @default 450
    */
   minFlingVelocity: PropTypes.number,
   /**
@@ -640,13 +648,15 @@ SwipeableDrawer.propTypes = {
    */
   SwipeAreaProps: PropTypes.object,
   /**
-   * The width of the left most (or right most) area in pixels where the
-   * drawer can be swiped open from.
+   * The width of the left most (or right most) area in `px` that
+   * the drawer can be swiped open from.
+   * @default 20
    */
   swipeAreaWidth: PropTypes.number,
   /**
    * The duration for the transition, in milliseconds.
    * You may specify a single timeout for all transitions, or individually with an object.
+   * @default { enter: duration.enteringScreen, exit: duration.leavingScreen }
    */
   transitionDuration: PropTypes.oneOfType([
     PropTypes.number,

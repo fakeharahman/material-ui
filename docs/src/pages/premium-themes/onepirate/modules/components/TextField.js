@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
@@ -35,12 +35,12 @@ const styles = (theme) => ({
   [inputSyleMapping['small']]: {
     fontSize: 14,
     padding: theme.spacing(1),
-    width: `calc(100% - ${theme.spacing(2)}px)`,
+    width: `calc(100% - ${theme.spacing(2)})`,
   },
   [inputSyleMapping['medium']]: {
     fontSize: 16,
     padding: theme.spacing(2),
-    width: `calc(100% - ${theme.spacing(4)}px)`,
+    width: `calc(100% - ${theme.spacing(4)})`,
   },
   [inputSyleMapping['large']]: {
     fontSize: 18,
@@ -81,14 +81,9 @@ function TextField(props) {
     ...InputPropsOther
   } = InputProps;
 
-  const disableUnderline = {
-    disableUnderline: true,
-  };
-
   return (
     <MuiTextField
       InputProps={{
-        ...disableUnderline,
         classes: {
           root: classes.root,
           input: clsx(
@@ -102,6 +97,7 @@ function TextField(props) {
           disabled: classes.disabled,
           ...InputPropsClassesOther,
         },
+        disableUnderline: true,
         ...InputPropsOther,
       }}
       InputLabelProps={{

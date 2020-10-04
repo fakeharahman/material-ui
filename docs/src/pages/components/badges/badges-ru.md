@@ -1,11 +1,14 @@
 ---
-title: React-компонент Значок
+title: React Badge component
 components: Badge
+githubLabel: 'component: Badge'
 ---
 
-# Badge (значок)
+# Badge
 
 <p class="description">Значок генерирует маленький значок в правом верхнем углу своего дочернего(их) элемента(ов).</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Простые значки
 

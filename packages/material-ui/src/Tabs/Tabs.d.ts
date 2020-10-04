@@ -15,6 +15,12 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
      */
     action?: React.Ref<TabsActions>;
     /**
+     * If `true`, the scroll buttons aren't forced hidden on mobile.
+     * By default the scroll buttons are hidden on mobile and takes precedence over `scrollButtons`.
+     * @default false
+     */
+    allowScrollButtonsMobile?: boolean;
+    /**
      * The label for the Tabs as a string.
      */
     'aria-label'?: string;
@@ -25,6 +31,7 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
     /**
      * If `true`, the tabs will be centered.
      * This prop is intended for large views.
+     * @default false
      */
     centered?: boolean;
     /**
@@ -49,17 +56,22 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
       scroller?: string;
       /** Styles applied to the tablist element if `!variant="scrollable"`. */
       fixed?: string;
-      /** Styles applied to the tablist element if `variant="scrollable"`. */
-      scrollable?: string;
+      /** Styles applied to the tablist element if `variant="scrollable"` and `orientation="horizontal"`. */
+      scrollableX?: string;
+      /** Styles applied to the tablist element if `variant="scrollable"` and `orientation="vertical"`. */
+      scrollableY?: string;
+      /** Styles applied to the tablist element if `variant="scrollable"` and `visibleScrollbar={false}`. */
+      hideScrollbar?: string;
       /** Styles applied to the `ScrollButtonComponent` component. */
       scrollButtons?: string;
-      /** Styles applied to the `ScrollButtonComponent` component if `scrollButtons="auto"` or scrollButtons="desktop"`. */
-      scrollButtonsDesktop?: string;
+      /** Styles applied to the `ScrollButtonComponent` component if `allowScrollButtonsMobile={true}`. */
+      scrollButtonsHideMobile?: string;
       /** Styles applied to the `TabIndicator` component. */
       indicator?: string;
     };
     /**
      * Determines the color of the indicator.
+     * @default 'secondary'
      */
     indicatorColor?: 'secondary' | 'primary';
     /**
@@ -71,21 +83,26 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
     onChange?: (event: React.SyntheticEvent, value: any) => void;
     /**
      * The tabs orientation (layout flow direction).
+     * @default 'horizontal'
      */
     orientation?: 'horizontal' | 'vertical';
     /**
      * The component used to render the scroll buttons.
+     * @default TabScrollButton
      */
     ScrollButtonComponent?: React.ElementType;
     /**
      * Determine behavior of scroll buttons when tabs are set to scroll:
      *
      * - `auto` will only present them when not all the items are visible.
-     * - `desktop` will only present them on medium and larger viewports.
-     * - `on` will always present them.
-     * - `off` will never present them.
+     * - `true` will always present them.
+     * - `false` will never present them.
+     *
+     * By default the scroll buttons are hidden on mobile.
+     * This behavior can be disabled with `allowScrollButtonsMobile`.
+     * @default 'auto'
      */
-    scrollButtons?: 'auto' | 'desktop' | 'on' | 'off';
+    scrollButtons?: 'auto' | true | false;
     /**
      * If `true` the selected tab changes on focus. Otherwise it only
      * changes on activation.
@@ -93,6 +110,7 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
     selectionFollowsFocus?: boolean;
     /**
      * Props applied to the tab indicator element.
+     * @default  {}
      */
     TabIndicatorProps?: Partial<React.HTMLAttributes<HTMLDivElement>>;
     /**
@@ -101,6 +119,7 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
     TabScrollButtonProps?: Partial<TabScrollButtonProps>;
     /**
      * Determines the color of the `Tab`.
+     * @default 'inherit'
      */
     textColor?: 'secondary' | 'primary' | 'inherit';
     /**
@@ -116,8 +135,15 @@ export interface TabsTypeMap<P = {}, D extends React.ElementType = typeof Button
      *  -`fullWidth` will make the tabs grow to use all the available space,
      *  which should be used for small views, like on mobile.
      *  - `standard` will render the default state.
+     * @default 'standard'
      */
     variant?: 'standard' | 'scrollable' | 'fullWidth';
+    /**
+     * If `true`, the scrollbar will be visible. It can be useful when displaying
+     * a long vertical list of tabs.
+     * @default false
+     */
+    visibleScrollbar?: boolean;
   };
   defaultComponent: D;
 }

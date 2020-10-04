@@ -1,7 +1,41 @@
 import { expect } from 'chai';
-import { getContents, prepareMarkdown } from './parseMarkdown';
+import { getContents, getDescription, getHeaders, prepareMarkdown } from './parseMarkdown';
 
 describe('parseMarkdown', () => {
+  describe('getDescription', () => {
+    it('trims the description', () => {
+      expect(
+        getDescription(`
+        <p class="description">
+          Some description
+        </p>
+      `),
+      ).to.equal('Some description');
+    });
+  });
+
+  describe('getHeaders', () => {
+    it('should return a correct result', () => {
+      expect(
+        getHeaders(`
+---
+title: React Alert component
+components: Alert, AlertTitle
+githubLabel: 'component: Alert'
+packageName: '@material-ui/lab'
+waiAria: https://www.w3.org/TR/wai-aria-practices/#alert
+---
+`),
+      ).to.deep.equal({
+        components: ['Alert', 'AlertTitle'],
+        githubLabel: 'component: Alert',
+        packageName: '@material-ui/lab',
+        title: 'React Alert component',
+        waiAria: 'https://www.w3.org/TR/wai-aria-practices/#alert',
+      });
+    });
+  });
+
   describe('getContents', () => {
     describe('Split markdown into an array, separating demos', () => {
       it('returns a single entry without a demo', () => {

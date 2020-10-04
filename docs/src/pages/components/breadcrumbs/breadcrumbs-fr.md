@@ -1,19 +1,23 @@
 ---
-title: Composant React Fil d'Ariane
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
+githubLabel: 'component: Breadcrumbs'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#breadcrumb'
 ---
 
 # Breadcrumbs (Fil d'Ariane)
 
 <p class="description">Le fil d'Ariane permet aux utilisateurs d’effectuer des sélections dans une plage de valeurs.</p>
 
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
 ## Fil d'Ariane simple
 
 {{"demo": "pages/components/breadcrumbs/SimpleBreadcrumbs.js"}}
 
-## Active last breadcrumb
+## Dernier fil d'Ariane actif
 
-Keep the last breadcrumb interactive.
+Garder le dernier fil d'ariane interactif.
 
 {{"demo": "pages/components/breadcrumbs/ActiveLastBreadcrumb.js"}}
 

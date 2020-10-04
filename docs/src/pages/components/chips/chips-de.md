@@ -1,6 +1,8 @@
 ---
-title: Chip React Component
+title: React Chip component
 components: Chip
+githubLabel: 'component: Chip'
+materialDesign: https://material.io/components/chips
 ---
 
 # Chip
@@ -10,6 +12,8 @@ components: Chip
 [Chips](https://material.io/design/components/chips.html) erlauben es dem Nutzer, eine Information einzugeben, eine Auswahl zu treffen, Inhalte zu filtern oder Aktionen auszulösen.
 
 Obwohl hier als eigenständige Komponente eingebunden, wird der wohl häufigste Anwendungsfall in einer Art von Input sein. Einiges des hier demonstrierten Verhaltens ist also nicht unbedingt im Kontext dargestellt.
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Chip
 

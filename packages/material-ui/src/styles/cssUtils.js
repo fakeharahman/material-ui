@@ -33,7 +33,6 @@ export function convertLength(baseFontSize) {
         pxLength = toUnitless(length) * toUnitless(baseFontSize);
       } else if (fromUnit === 'rem') {
         pxLength = toUnitless(length) * toUnitless(baseFontSize);
-        return length;
       }
     }
 
@@ -89,7 +88,6 @@ export function fontGrid({ lineHeight, pixels, htmlFontSize }) {
  *     fontSize: '20px',
  *   },
  * }
- *
  * @param {Object} params
  * @param {string} params.cssProperty - The CSS property to be made responsive
  * @param {number} params.min - The smallest value of the CSS property

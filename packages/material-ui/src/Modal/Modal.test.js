@@ -47,7 +47,7 @@ describe('<Modal />', () => {
     }),
   );
 
-  describe('props', () => {
+  describe('props:', () => {
     let container;
 
     before(() => {
@@ -60,7 +60,7 @@ describe('<Modal />', () => {
     });
 
     it('should consume theme default props', () => {
-      const theme = createMuiTheme({ components: { MuiModal: { props: { container } } } });
+      const theme = createMuiTheme({ components: { MuiModal: { defaultProps: { container } } } });
       render(
         <ThemeProvider theme={theme}>
           <Modal open>
@@ -528,20 +528,6 @@ describe('<Modal />', () => {
 
         expect(getByTestId('foreign-input')).toHaveFocus();
       });
-    });
-  });
-
-  describe('prop: onRendered', () => {
-    it('should fire', () => {
-      const handleRendered = spy();
-
-      render(
-        <Modal open onRendered={handleRendered}>
-          <div />
-        </Modal>,
-      );
-
-      expect(handleRendered).to.have.property('callCount', 1);
     });
   });
 

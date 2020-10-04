@@ -1,11 +1,14 @@
 ---
-title: React-компонент ButtonGroup
+title: React ButtonGroup component
 components: Button, ButtonGroup
+githubLabel: 'component: ButtonGroup'
 ---
 
 # Группа кнопок
 
 <p class="description">Компонент ButtonGroup можно использовать для группирования связанных кнопок.</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Базовые свойства кнопок
 

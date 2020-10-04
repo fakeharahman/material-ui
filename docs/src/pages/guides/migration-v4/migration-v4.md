@@ -6,7 +6,7 @@ Looking for the v4 docs? [Find them here](https://material-ui.com/versions/).
 
 > This document is a work in progress.
 > Have you upgraded your site and run into something that's not covered here?
-> [Add your changes on GitHub](https://github.com/mui-org/material-ui/blob/next/docs/src/pages/guides/migration-v4/migration-v4.md).
+> [Add your changes on GitHub](https://github.com/mui-org/material-ui/blob/HEAD/docs/src/pages/guides/migration-v4/migration-v4.md).
 
 ## Introduction
 
@@ -53,6 +53,49 @@ This change affects almost all components where you're using the `component` pro
 
 ### Theme
 
+- Breakpoints are now treated as values instead of ranges. The behavior of `down(key)` was changed to define media query less than the value defined with the corresponding breakpoint (exclusive).
+  The `between(start, end)` was also updated to define media query for the values between the actual values of start (inclusive) and end (exclusive).
+  When using the `down()` breakpoints utility you need to update the breakpoint key by one step up. When using the `between(start, end)` the end breakpoint should also be updated by one step up. The same should be done when using the `Hidden` component. Find examples of the changes required defined below:
+
+```diff
+-theme.breakpoints.down('sm') // '@media (max-width:959.95px)' - [0, sm + 1) => [0, md)
++theme.breakpoints.down('md') // '@media (max-width:959.95px)' - [0, md)
+```
+
+```diff
+-theme.breakpoints.between('sm', 'md') // '@media (min-width:600px) and (max-width:1279.95px)' - [sm, md + 1) => [0, lg)
++theme.breakpoints.between('sm', 'lg') // '@media (min-width:600px) and (max-width:1279.95px)' - [0, lg)
+```
+
+```diff
+-theme.breakpoints.between('sm', 'xl') // '@media (min-width:600px)'
++theme.breakpoints.up('sm') // '@media (min-width:600px)'
+```
+
+```diff
+-<Hidden smDown>{...}</Hidden> // '@media (min-width:600px)'
++<Hidden mdDown>{...}</Hidden> // '@media (min-width:600px)'
+```
+
+#### Upgrade helper
+
+For a smoother transition, the `adaptV4Theme` helper allows you to iteratively upgrade some of the theme changes to the new theme structure.
+
+```diff
+-import { createMuiTheme } from '@material-ui/core/styles';
++import { createMuiTheme, adaptV4Theme } from '@material-ui/core/styles';
+
+-const theme = createMuitheme({
++const theme = createMuitheme(adaptV4Theme({
+  // v4 theme
+-});
++}));
+```
+
+The following changes are supported by the adapter.
+
+#### Changes
+
 - The "gutters" abstraction hasn't proven to be used frequently enough to be valuable.
 
   ```diff
@@ -65,7 +108,51 @@ This change affects almost all components where you're using the `component` pro
   +},
   ```
 
+- `theme.spacing` now returns single values with px units by default.
+  This change improves the integration with styled-components & emotion.
+
+  Before:
+
+  ```
+  theme.spacing(2) => 16
+  ```
+
+  After:
+
+  ```
+  theme.spacing(2) => '16px'
+  ```
+
+- The `theme.palette.text.hint` key was unused in Material-UI components, and has been removed.
+
+```diff
+import { createMuiTheme } from '@material-ui/core/styles';
+
+-const theme = createMuitheme(),
++const theme = createMuitheme({
++  palette: { text: { hint: 'rgba(0, 0, 0, 0.38)' } },
++});
+```
+
+```diff
+import { createMuiTheme } from '@material-ui/core/styles';
+
+-const theme = createMuitheme({palette: { type: 'dark' }}),
++const theme = createMuitheme({
++  palette: { type: 'dark', text: { hint: 'rgba(0, 0, 0, 0.38)' } },
++});
+```
+
 - The components' definition inside the theme were restructure under the `components` key, to allow people easier discoverability about the definitions regarding one component.
+
+- The `theme.palette.type` was renamed to `theme.palette.mode`, to better follow the "dark mode" term that is usually used for describing this feature.
+
+```diff
+import { createMuiTheme } from '@material-ui/core/styles';
+
+-const theme = createMuitheme({palette: { type: 'dark' }}),
++const theme = createMuitheme({palette: { mode: 'dark' }}),
+```
 
 1. `props`
 
@@ -80,7 +167,7 @@ const theme = createMuitheme({
 -  },
 +  components: {
 +    MuiButton: {
-+      props: {
++      defaultProps: {
 +        disableRipple: true,
 +      },
 +    },
@@ -101,7 +188,7 @@ const theme = createMuitheme({
 -  },
 +  components: {
 +    MuiButton: {
-+      overrides: {
++      styleOverrides: {
 +        root: { padding: 0 },
 +      },
 +    },
@@ -109,27 +196,27 @@ const theme = createMuitheme({
 });
 ```
 
-For a smoother transition, the `adaptV4Theme` helper allows you to iteratively upgrade to the new theme structure. Note that it will display a deprecation warning in the console, since it will be removed at the next major release.
+### Alert
 
-```diff
--import { createMuiTheme } from '@material-ui/core/styles';
-+import { createMuiTheme, adaptV4Theme } from '@material-ui/core/styles';
+- Move the component from the lab to the core. The component is now stable.
 
--const theme = createMuitheme({
-+const theme = createMuitheme(adaptV4Theme({
-  props: {
-    MuiButton: {
-      disableRipple: true,
-    },
-  },
-  overrides: {
-    MuiButton: {
-      root: { padding: 0 },
-    },
-  },
--});
-+}));
-```
+  ```diff
+  -import Alert from '@material-ui/lab/Alert';
+  -import AlertTitle from '@material-ui/lab/AlertTitle';
+  +import Alert from '@material-ui/core/Alert';
+  +import AlertTitle from '@material-ui/core/AlertTitle';
+  ```
+
+  ### Autocomplete
+
+- Move the component from the lab to the core. The component is now stable.
+
+  ```diff
+  -import Autocomplete from '@material-ui/lab/Autocomplete';
+  -import useAutocomplete  from '@material-ui/lab/useAutocomplete';
+  +import Autocomplete from '@material-ui/core/Autocomplete';
+  +import useAutoComplete from '@material-ui/core/useAutocomplete';
+  ```
 
 ### Avatar
 
@@ -301,6 +388,19 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   +<Accordion onChange={(event: React.SyntheticEvent, expanded: boolean) => {}} />
   ```
 
+- Rename `focused` to `focusVisible` for consistency:
+
+  ```diff
+  <Accordion
+    classes={{
+  -    focused: 'custom-focus-visible-classname',
+  +    focusVisible: 'custom-focus-visible-classname',
+    }}
+  />
+  ```
+
+- Remove `display: flex` from AccordionDetails as its too opinionated.
+
 ### Fab
 
 - Rename `round` to `circular` for consistency. The possible values should be adjectives, not nouns:
@@ -308,6 +408,14 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   ```diff
   -<Fab variant="round">
   +<Fab variant="circular">
+  ```
+
+### Chip
+
+- Rename `default` variant to `filled` for consistency.
+  ```diff
+  -<Chip variant="default">
+  +<Chip variant="filled">
   ```
 
 ### Grid
@@ -322,28 +430,34 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
 ### GridList
 
 - Rename the `GridList` components to `ImageList` to align with the current Material Design naming.
+- Rename the GridList `spacing` prop to `gap` to align with the CSS attribute.
+- Rename the GridList `cellHeight` prop to `rowHieght`.
+- Add the `variant` prop to GridList.
+- Rename the GridListItemBar `actionPosition` prop to `position`. (Note also the related classname changes.)
+- Use CSS object-fit. For IE11 support either use a polyfill such as
+  https://www.npmjs.com/package/object-fit-images, or continue to use the v4 component.
 
 ```diff
 -import GridList from '@material-ui/core/GridList';
 -import GridListTile from '@material-ui/core/GridListTile';
 -import GridListTileBar from '@material-ui/core/GridListTileBar';
 +import ImageList from '@material-ui/core/ImageList';
-+import ImageListTile from '@material-ui/core/ImageListTile';
-+import ImageListTileBar from '@material-ui/core/ImageListTileBar';
++import ImageListItem from '@material-ui/core/ImageListItem';
++import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 
--<GridList>
+-<GridList spacing={8} cellHeight={200}>
 -  <GridListTile>
-+<ImageList>
-+  <ImageListTile>
++<ImageList gap={8} rowHeight={200}>
++  <ImageListItem>
      <img src="file.jpg" alt="Image title" />
 -    <GridListTileBar
-+    <ImageListTileBar
++    <ImageListItemBar
        title="Title"
        subtitle="Subtitle"
      />
 -  </GridListTile>
 -</GridList>
-+  </ImageListTile>
++  </ImageListItem>
 +</ImageList>
 ```
 
@@ -370,25 +484,34 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   >
   ```
 
+### Modal
+
+- Remove `onRendered` prop.
+  Depending on your use case either use a [callback ref](https://reactjs.org/docs/refs-and-the-dom.html#callback-refs) on the child element or an effect hook in the child component.
+
 ### Pagination
+
+- Move the component from the lab to the core. The component is now stable.
+
+  ```diff
+  -import Pagination from '@material-ui/lab/Pagination';
+  -import PaginationItem from '@material-ui/lab/PaginationItem';
+  -import { usePagination } from '@material-ui/lab/Pagination';
+  +import Pagination from '@material-ui/core/Pagination';
+  +import PaginationItem from '@material-ui/core/PaginationItem';
+  +import usePagination from '@material-ui/core/usePagination';
+  ```
 
 - Rename `round` to `circular` for consistency. The possible values should be adjectives, not nouns:
 
   ```diff
   -<Pagination shape="round">
-  +<Pagination shape="circular">
-  ```
-
-### PaginationItem
-
-- Rename `round` to `circular` for consistency. The possible values should be adjectives, not nouns:
-
-  ```diff
   -<PaginationItem shape="round">
+  +<Pagination shape="circular">
   +<PaginationItem shape="circular">
   ```
 
-  ### Popover
+### Popover
 
 - The onE\* transition props were removed. Use TransitionProps instead.
 
@@ -411,7 +534,29 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   />
   ```
 
+### Portal
+
+- Remove `onRendered` prop.
+  Depending on your use case either use a [callback ref](https://reactjs.org/docs/refs-and-the-dom.html#callback-refs) on the child element or an effect hook in the child component.
+
 ### Rating
+
+- Move the component from the lab to the core. The component is now stable.
+
+  ```diff
+  -import Rating from '@material-ui/lab/Rating';
+  +import Rating from '@material-ui/core/Rating';
+  ```
+
+- Change the default empty icon to improve accessibility.
+  If you have a custom `icon` prop but no `emptyIcon` prop, you can restore the previous behavior with:
+
+  ```diff
+  <Rating
+    icon={customIcon}
+  + emptyIcon={null}
+  />
+  ```
 
 - Rename `visuallyhidden` to `visuallyHidden` for consistency:
 
@@ -435,6 +580,26 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   -  <Button />
   -</RootRef>
   +<Button ref={ref} />
+  ```
+
+### Skeleton
+
+- Move the component from the lab to the core. The component is now stable.
+
+  ```diff
+  -import Skeleton from '@material-ui/lab/Skeleton';
+  +import Skeleton from '@material-ui/core/Skeleton';
+  ```
+
+- Rename `circle` to `circular` and `rect` to `rectangular` for consistency. The possible values should be adjectives, not nouns:
+
+  ```diff
+  -<Skeleton variant="circle" />
+  -<Skeleton variant="rect" />
+  -<Skeleton classes={{ circle: 'custom-circle-classname', rect: 'custom-rect-classname',  }} />
+  +<Skeleton variant="circular" />
+  +<Skeleton variant="rectangular" />
+  +<Skeleton classes={{ circular: 'custom-circle-classname', rectangular: 'custom-rect-classname',  }} />
   ```
 
 ### Slider
@@ -478,20 +643,54 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   />
   ```
 
-  ### Skeleton
+### SpeedDial
 
-- Rename `circle` to `circular` and `rect` to `rectangular` for consistency. The possible values should be adjectives, not nouns:
+- Move the component from the lab to the core. The component is now stable.
 
   ```diff
-  -<Skeleton variant="circle" />
-  -<Skeleton variant="rect" />
-  -<Skeleton classes={{ circle: 'custom-circle-classname', rect: 'custom-rect-classname',  }} />
-  +<Skeleton variant="circular" />
-  +<Skeleton variant="rectangular" />
-  +<Skeleton classes={{ circular: 'custom-circle-classname', rectangular: 'custom-rect-classname',  }} />
+  -import SpeedDial from '@material-ui/lab/SpeedDial';
+  -import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+  -import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
+  +import SpeedDial from '@material-ui/core/SpeedDial';
+  +import SpeedDialAction from '@material-ui/core/SpeedDialAction';
+  +import SpeedDialIcon from '@material-ui/core/SpeedDialIcon';
   ```
 
-### TablePagination
+### Stepper
+
+- The root component (Paper) was replaced with a div. Stepper no longer has elevation, nor inherits Paper's props. This change is meant to encourage composition.
+
+  ```diff
+  -<Stepper elevation={2}>
+  -  <Step>
+  -    <StepLabel>Hello world</StepLabel>
+  -  </Step>
+  -</Stepper>
+  +<Paper square elevation={2}>
+  +  <Stepper>
+  +    <Step>
+  +      <StepLabel>Hello world</StepLabel>
+  +    </Step>
+  +  </Stepper>
+  +<Paper>
+  ```
+
+- Remove the built-in 24px padding.
+
+  ```diff
+  -<Stepper>
+  -  <Step>
+  -    <StepLabel>Hello world</StepLabel>
+  -  </Step>
+  -</Stepper>
+  +<Stepper style={{ padding: 24 }}>
+  +  <Step>
+  +    <StepLabel>Hello world</StepLabel>
+  +  </Step>
+  +</Stepper>
+  ```
+
+### Table
 
 - The customization of the table pagination's actions labels must be done with the `getItemAriaLabel` prop. This increases consistency with the `Pagination` component.
 
@@ -509,6 +708,20 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   ```diff
   -<Tabs onChange={(event: React.ChangeEvent<{}>, value: unknown) => {}} />
   +<Tabs onChange={(event: React.SyntheticEvent, value: unknown) => {}} />
+  ```
+
+- The API that controls the scroll buttons has been split it in two props.
+
+  - The `scrollButtons` prop controls when the scroll buttons are displayed depending on the space available.
+  - The `allowScrollButtonsMobile` prop removes the CSS media query that systematically hide the scroll buttons on mobile.
+
+  ```diff
+  -<Tabs scrollButtons="on" />
+  -<Tabs scrollButtons="desktop" />
+  -<Tabs scrollButtons="off" />
+  +<Tabs scrollButtons allowScrollButtonsMobile />
+  +<Tabs scrollButtons />
+  +<Tabs scrollButtons={false} />
   ```
 
 ### TextField
@@ -550,6 +763,17 @@ For a smoother transition, the `adaptV4Theme` helper allows you to iteratively u
   ```diff
   -<TextareAutosize rowsMin={1}>
   +<TextareAutosize minRows={1}>
+  ```
+
+### ToggleButton
+
+- Move the component from the lab to the core. The component is now stable.
+
+  ```diff
+  -import ToggleButton from '@material-ui/lab/ToggleButton';
+  -import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+  +import ToggleButton from '@material-ui/core/ToggleButton';
+  +import ToggleButtonGroup from '@material-ui/core/ToggleButtonGroup';
   ```
 
 ### Typography

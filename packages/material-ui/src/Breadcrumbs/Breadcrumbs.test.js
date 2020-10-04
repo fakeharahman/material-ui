@@ -31,7 +31,7 @@ describe('<Breadcrumbs />', () => {
     testComponentPropWith: 'div',
   }));
 
-  it('should render inaccessible seperators between each listitem', () => {
+  it('should render inaccessible separators between each listitem', () => {
     const { getAllByRole, getByRole } = render(
       <Breadcrumbs>
         <span>first</span>
@@ -60,9 +60,9 @@ describe('<Breadcrumbs />', () => {
 
     const listitems = getAllByRole('listitem', { hidden: false });
 
-    expect(listitems).to.have.length(2);
+    expect(listitems).to.have.length(3);
     expect(getByRole('list')).to.have.text('first//ninth');
-    expect(getByRole('button').querySelector('[data-mui-test="MoreHorizIcon"]')).not.to.equal(null);
+    expect(getByRole('button').querySelector('[data-testid="MoreHorizIcon"]')).not.to.equal(null);
   });
 
   it('should expand when `BreadcrumbCollapsed` is clicked', () => {

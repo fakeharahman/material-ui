@@ -10,6 +10,7 @@ export interface SelectProps
   /**
    * If `true`, the width of the popover will automatically be set according to the items inside the
    * menu, otherwise it will be at least the width of the select input.
+   * @default false
    */
   autoWidth?: boolean;
   /**
@@ -53,12 +54,17 @@ export interface SelectProps
   /**
    * If `true`, a value is displayed even if no items are selected.
    *
-   * In order to display a meaningful value, a function should be passed to the `renderValue` prop which returns the value to be displayed when no items are selected.
-   * You can only use it when the `native` prop is `false` (default).
+   * In order to display a meaningful value, a function can be passed to the `renderValue` prop which
+   * returns the value to be displayed when no items are selected.
+   *
+   * ⚠️ When using this prop, make sure the label doesn't overlap with the empty displayed value.
+   * The label should either be hidden or forced to a shrunk state.
+   * @default false
    */
   displayEmpty?: boolean;
   /**
    * The icon that displays the arrow.
+   * @default ArrowDropDownIcon
    */
   IconComponent?: React.ElementType;
   /**
@@ -85,6 +91,7 @@ export interface SelectProps
   labelId?: string;
   /**
    * See [OutlinedInput#label](/api/outlined-input/#props)
+   * @default 0
    */
   labelWidth?: number;
   /**
@@ -93,14 +100,16 @@ export interface SelectProps
   MenuProps?: Partial<MenuProps>;
   /**
    * If `true`, `value` must be an array and the menu will support multiple selections.
+   * @default false
    */
   multiple?: boolean;
   /**
    * If `true`, the component will be using a native `select` element.
+   * @default false
    */
   native?: boolean;
   /**
-   * Callback function fired when a menu item is selected.
+   * Callback fired when a menu item is selected.
    *
    * @param {object} event The event source of the callback.
    * You can pull out the new value by accessing `event.target.value` (any).
@@ -113,14 +122,14 @@ export interface SelectProps
    *
    * @param {object} event The event source of the callback.
    */
-  onClose?: (event: React.ChangeEvent<{}>) => void;
+  onClose?: (event: React.SyntheticEvent) => void;
   /**
    * Callback fired when the component requests to be opened.
    * Use in controlled mode (see open).
    *
    * @param {object} event The event source of the callback.
    */
-  onOpen?: (event: React.ChangeEvent<{}>) => void;
+  onOpen?: (event: React.SyntheticEvent) => void;
   /**
    * Control `select` open state.
    * You can only use it when the `native` prop is `false` (default).
@@ -149,6 +158,7 @@ export interface SelectProps
   value?: unknown;
   /**
    * The variant to use.
+   * @default 'standard'
    */
   variant?: 'standard' | 'outlined' | 'filled';
 }

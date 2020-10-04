@@ -16,15 +16,6 @@ The breakpoints are used internally in various components to make them responsiv
 - **lg,** large: 1280px
 - **xl,** extra-large: 1920px
 
-These breakpoint values are used to determine breakpoint ranges. Диапазон начинается с значения первой точки (включительно) до следующей, но не включая её:
-
-```js
-значение             |0px     600px    960px    1280px   1920px
-ключ                     |xs      sm       md       lg       xl
-ширина экрана  |----------|--------------|-------------------->
-диапазон             |   xs   |   m   |   md |   lg   |   xl
-```
-
 These values can be [customized](#custom-breakpoints).
 
 ## CSS Media Queries
@@ -39,20 +30,10 @@ CSS media queries are the idiomatic approach to make your UI responsive. The the
 В следующем примере мы изменяем фоновой цвет (красный, синий или зеленый) в зависимости от ширины экрана.
 
 ```jsx
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('lg')]: {
-      backgroundColor: green[500],
-    },
-  },
-});
+значение             |0px     600px    960px    1280px   1920px
+ключ                     |xs      sm       md       lg       xl
+ширина экрана  |----------|--------------|-------------------->
+диапазон             |   xs   |   m   |   md |   lg   |   xl
 ```
 
 {{"demo": "pages/customization/breakpoints/MediaQuery.js"}}
@@ -148,6 +129,33 @@ declare module "@material-ui/core/styles/createBreakpoints" {
 
 #### Возвращает
 
+`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
+
+#### Примеры
+
+```js
+declare module "@material-ui/core/styles/createBreakpoints" {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    tablet: true; // adds the `tablet` breakpoint
+    laptop: true;
+    desktop: true;
+  }
+}
+```
+
+### `theme.breakpoints.down(key) => media query`
+
+#### Аргументы
+
+1. `key` (*String* | *Number*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+
+#### Возвращает
+
 `media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than and including the screen size given by the breakpoint key.
 
 #### Примеры
@@ -165,11 +173,11 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.down(key) => media query`
+### `theme.breakpoints.only(key) => media query`
 
 #### Аргументы
 
-1. `key` (*String* | *Number*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+1. `key` (*String*): A breakpoint key (`xs`, `sm`, etc.).
 
 #### Возвращает
 
@@ -191,11 +199,12 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.only(key) => media query`
+### `theme.breakpoints.between(start, end) => media query`
 
 #### Аргументы
 
-1. `key` (*String*): A breakpoint key (`xs`, `sm`, etc.).
+1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
 
 #### Возвращает
 
@@ -217,33 +226,6 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.between(start, end) => media query`
-
-#### Аргументы
-
-1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-
-#### Возвращает
-
-`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
-
-#### Примеры
-
-```js
-const styles = theme => ({
-  root: {
-    backgroundColor: 'blue',
-    // Match [sm, md + 1)
-    //       [sm, lg)
-    //       [600px, 1280px[
-    [theme.breakpoints.between('sm', 'md')]: {
-      backgroundColor: 'red',
-    },
-  },
-});
-```
-
 ### `withWidth([options]) => higher-order component`
 
 Вставить свойство `width`. Оно не изменяет переданный в него компонент; вместо этого оно возвращает новый компонент. Свойство точки останова `width` соответствует текущей ширине экрана. Это может быть одна из следующих точек останова:
@@ -258,10 +240,11 @@ type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 #### Аргументы
 
-1. `варианты` (*объекта* [optional]): 
-  - `options.withTheme` (*Boolean* [optional]): По умолчанию - `false`. Provide the `theme` object to the component as a property.
-  - `options.noSSR` (*Boolean* [optional]): По умолчанию - `false`. In order to perform the server-side rendering reconciliation, it needs to render twice. A first time with nothing and a second time with the children. This double pass rendering cycle comes with a drawback. The UI might blink. You can set this flag to `true` if you are not doing server-side rendering.
-  - `options.initialWidth` (*Breakpoint* [optional]): As `window.innerWidth` is unavailable on the server, we default to rendering an empty component during the first mount. You might want to use an heuristic to approximate the screen width of the client browser screen width. For instance, you could be using the user-agent or the client-hints. https://caniuse.com/#search=client%20hint, we also can set the initial width globally using [`custom properties`](/customization/globals/#default-props) on the theme. In order to set the initialWidth we need to pass a custom property with this shape:
+1. `варианты` (*объекта* [optional]):
+
+- `options.withTheme` (*Boolean* [optional]): По умолчанию - `false`. Provide the `theme` object to the component as a property.
+- `options.noSSR` (*Boolean* [optional]): По умолчанию - `false`. In order to perform the server-side rendering reconciliation, it needs to render twice. A first time with nothing and a second time with the children. This double pass rendering cycle comes with a drawback. The UI might blink. You can set this flag to `true` if you are not doing server-side rendering.
+- `options.initialWidth` (*Breakpoint* [optional]): As `window.innerWidth` is unavailable on the server, we default to rendering an empty component during the first mount. You might want to use an heuristic to approximate the screen width of the client browser screen width. For instance, you could be using the user-agent or the client-hints. https://caniuse.com/#search=client%20hint, we also can set the initial width globally using [`custom properties`](/customization/globals/#default-props) on the theme. In order to set the initialWidth we need to pass a custom property with this shape:
 
 ```js
 const theme = createMuiTheme({
@@ -270,7 +253,7 @@ const theme = createMuiTheme({
     MuiWithWidth: {
       // Initial width property
       initialWidth: 'lg', // Breakpoint being globally set 🌎!
-    },
+      },
   },
 });
 ```

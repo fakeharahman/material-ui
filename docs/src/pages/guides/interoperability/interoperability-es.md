@@ -9,7 +9,6 @@ This guide aims to document the most popular alternatives, but you should find t
 - [Styled Components](#styled-components)
 - [CSS Modules](#css-modules)
 - [Emotion](#emotion)
-- [React JSS](#react-jss)
 
 ## Plain CSS
 
@@ -59,8 +58,11 @@ import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
+      */}
+</StylesProvider>
       Now, you can override Material-UI's styles. */}
 </StylesProvider>
+      Now, you can override Material-UI's styles.
 ```
 
 ### Deeper elements
@@ -149,8 +151,11 @@ import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
+      */}
+</StylesProvider>
       Now, you can override Material-UI's styles. */}
 </StylesProvider>
+      Now, you can override Material-UI's styles.
 ```
 
 ## Styled Components
@@ -186,7 +191,6 @@ export default function StyledComponents() {
     </div>
   );
 }
-
 ```
 
 ### Controlling priority ⚠️
@@ -198,8 +202,11 @@ import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
+      */}
+</StylesProvider>
       Now, you can override Material-UI's styles. */}
 </StylesProvider>
+      Now, you can override Material-UI's styles.
 ```
 
 Another approach is to use the `&&` characters in styled-components to [bump up specificity](https://www.styled-components.com/docs/advanced#issues-with-specificity) by repeating the class name. Avoid the usage of `!important`.
@@ -375,8 +382,11 @@ import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
+      */}
+</StylesProvider>
       Now, you can override Material-UI's styles. */}
 </StylesProvider>
+      Now, you can override Material-UI's styles.
 ```
 
 ### Deeper elements
@@ -469,8 +479,11 @@ import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
+      */}
+</StylesProvider>
       Now, you can override Material-UI's styles. */}
 </StylesProvider>
+      Now, you can override Material-UI's styles.
 ```
 
 ### Tema

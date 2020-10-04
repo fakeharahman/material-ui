@@ -1,8 +1,30 @@
+diff --git a/babel.config.js b/babel.config.js
+index f314ca4c3b..9cc20c7d7b 100644
+--- a/babel.config.js
++++ b/babel.config.js
+@@ -48,7 +48,16 @@ const productionPlugins = [
+ ];
+ 
+ module.exports = {
+-  presets: defaultPresets.concat(['@babel/preset-react', '@babel/preset-typescript']),
++  presets: defaultPresets.concat([
++    [
++      '@babel/preset-react',
++      {
++        // default in Babel 8
++        runtime: 'automatic',
++      },
++    ],
++    '@babel/preset-typescript',
++  ]),
+   plugins: [
+     [
+       'babel-plugin-macros',
 diff --git a/packages/material-ui-lab/src/Autocomplete/Autocomplete.test.js b/packages/material-ui-lab/src/Autocomplete/Autocomplete.test.js
-index 8addf692fb..86ea6e6dfa 100644
+index 025aaf707a..8d575dae50 100644
 --- a/packages/material-ui-lab/src/Autocomplete/Autocomplete.test.js
 +++ b/packages/material-ui-lab/src/Autocomplete/Autocomplete.test.js
-@@ -1139,8 +1139,6 @@ describe('<Autocomplete />', () => {
+@@ -1173,8 +1173,6 @@ describe('<Autocomplete />', () => {
          fireEvent.change(textbox, { target: { value: 'a' } });
          fireEvent.keyDown(textbox, { key: 'Enter' });
        }).toErrorDev([
@@ -11,7 +33,7 @@ index 8addf692fb..86ea6e6dfa 100644
          'Material-UI: The `getOptionLabel` method of Autocomplete returned undefined instead of a string',
          'Material-UI: The `getOptionLabel` method of Autocomplete returned undefined instead of a string',
          'Material-UI: The `getOptionLabel` method of Autocomplete returned undefined instead of a string',
-@@ -1195,9 +1193,6 @@ describe('<Autocomplete />', () => {
+@@ -1229,9 +1227,6 @@ describe('<Autocomplete />', () => {
            />,
          );
        }).toWarnDev([
@@ -21,7 +43,7 @@ index 8addf692fb..86ea6e6dfa 100644
          'None of the options match with `"not a good value"`',
          'None of the options match with `"not a good value"`',
        ]);
-@@ -1223,11 +1218,7 @@ describe('<Autocomplete />', () => {
+@@ -1257,11 +1252,7 @@ describe('<Autocomplete />', () => {
              groupBy={(option) => option.group}
            />,
          );
@@ -65,10 +87,10 @@ index 197b2f77a3..f1ead08079 100644
    });
  });
 diff --git a/packages/material-ui-styles/src/useThemeVariants/useThemeVariants.test.js b/packages/material-ui-styles/src/useThemeVariants/useThemeVariants.test.js
-index 9c99a49a1f..5d9db342e9 100644
+index 2ab151c6c8..6db6326d77 100644
 --- a/packages/material-ui-styles/src/useThemeVariants/useThemeVariants.test.js
 +++ b/packages/material-ui-styles/src/useThemeVariants/useThemeVariants.test.js
-@@ -127,11 +127,6 @@ describe('useThemeVariants', () => {
+@@ -135,11 +135,6 @@ describe('useThemeVariants', () => {
          </ThemeProvider>,
        ),
      ).toErrorDev([
@@ -80,8 +102,27 @@ index 9c99a49a1f..5d9db342e9 100644
        [
          `Material-UI: You are using a variant value \`test\` for which you didn't define styles.`,
          `Please create a new variant matcher in your theme for this variant. To learn more about matchers visit https://next.material-ui.com/r/custom-component-variants.`,
+diff --git a/packages/material-ui-utils/src/elementAcceptingRef.test.tsx b/packages/material-ui-utils/src/elementAcceptingRef.test.tsx
+index 10c5a998cb..b5390af22b 100644
+--- a/packages/material-ui-utils/src/elementAcceptingRef.test.tsx
++++ b/packages/material-ui-utils/src/elementAcceptingRef.test.tsx
+@@ -89,11 +89,11 @@ describe('elementAcceptingRef', () => {
+ 
+     it('accepts lazy', () => {
+       const Component = React.lazy(() =>
+-        Promise.resolve({ default: (props: any) => <div {...props} /> }),
++        Promise.resolve({
++          default: React.forwardRef((props, ref) => <div {...props} ref={ref} />),
++        }),
+       );
+ 
+-      // should actually fail when mounting since the ref is forwarded to a function component
+-      // but since this happens in a promise our consoleErrorMock doesn't catch it properly
+       assertPass(<Component />);
+     });
+ 
 diff --git a/packages/material-ui/src/Breadcrumbs/Breadcrumbs.test.js b/packages/material-ui/src/Breadcrumbs/Breadcrumbs.test.js
-index 55a501a6e6..8cabc24615 100644
+index c397f4b9f0..2fbea8f53e 100644
 --- a/packages/material-ui/src/Breadcrumbs/Breadcrumbs.test.js
 +++ b/packages/material-ui/src/Breadcrumbs/Breadcrumbs.test.js
 @@ -100,7 +100,6 @@ describe('<Breadcrumbs />', () => {
@@ -107,7 +148,7 @@ index d78203151f..72ac37571b 100644
    });
  
 diff --git a/packages/material-ui/src/Tabs/Tabs.test.js b/packages/material-ui/src/Tabs/Tabs.test.js
-index 9c004c515b..648559f279 100644
+index d629210cde..f53f50970f 100644
 --- a/packages/material-ui/src/Tabs/Tabs.test.js
 +++ b/packages/material-ui/src/Tabs/Tabs.test.js
 @@ -90,9 +90,6 @@ describe('<Tabs />', () => {
@@ -161,10 +202,10 @@ index 8c8f59a9d8..657a5e57bc 100644
        ]);
      });
 diff --git a/packages/material-ui/src/useMediaQuery/useMediaQuery.test.js b/packages/material-ui/src/useMediaQuery/useMediaQuery.test.js
-index 3fba3ffab7..532c206595 100644
+index 25dc48c4c1..b33af6309c 100644
 --- a/packages/material-ui/src/useMediaQuery/useMediaQuery.test.js
 +++ b/packages/material-ui/src/useMediaQuery/useMediaQuery.test.js
-@@ -275,11 +275,7 @@ describe('useMediaQuery', () => {
+@@ -277,11 +277,7 @@ describe('useMediaQuery', () => {
  
        expect(() => {
          render(<MyComponent />);
@@ -174,74 +215,6 @@ index 3fba3ffab7..532c206595 100644
 -        'Material-UI: The `query` argument provided is invalid',
 -      ]);
 +      }).toErrorDev(['Material-UI: The `query` argument provided is invalid']);
-     });
-   });
- });
-diff --git a/packages/material-ui/src/utils/useIsFocusVisible.test.js b/packages/material-ui/src/utils/useIsFocusVisible.test.js
-index fdf6df9a0d..aaa3ad1552 100644
---- a/packages/material-ui/src/utils/useIsFocusVisible.test.js
-+++ b/packages/material-ui/src/utils/useIsFocusVisible.test.js
-@@ -5,17 +5,6 @@ import { createMount } from 'test/utils';
- import useIsFocusVisible, { teardown as teardownFocusVisible } from './useIsFocusVisible';
- import useForkRef from './useForkRef';
- 
--function dispatchFocusVisible(element) {
--  element.ownerDocument.dispatchEvent(new window.Event('keydown'));
--  element.focus();
--}
--
--function simulatePointerDevice() {
--  // first focus on a page triggers focus visible until a pointer event
--  // has been dispatched
--  document.dispatchEvent(new window.Event('pointerdown'));
--}
--
- const SimpleButton = React.forwardRef(function SimpleButton(props, ref) {
-   const {
-     isFocusVisibleRef,
-@@ -85,31 +74,20 @@ describe('focus-visible polyfill', () => {
- 
-     it('should set focus state for shadowRoot children', () => {
-       const buttonRef = React.createRef();
--      mount(
--        <SimpleButton id="test-button" ref={buttonRef}>
--          Hello
--        </SimpleButton>,
--        {
--          attachTo: rootElement.shadowRoot,
--        },
--      );
--      simulatePointerDevice();
--
--      const { current: button } = buttonRef;
--      if (button.nodeName !== 'BUTTON') {
--        throw new Error('missing button');
--      }
--
--      expect(button.classList.contains('focus-visible')).to.equal(false);
--
--      button.focus();
--
--      expect(button.classList.contains('focus-visible')).to.equal(false);
--
--      button.blur();
--      dispatchFocusVisible(button);
--
--      expect(button.classList.contains('focus-visible')).to.equal(true);
-+      expect(() => {
-+        expect(() => {
-+          mount(
-+            <SimpleButton id="test-button" ref={buttonRef}>
-+              Hello
-+            </SimpleButton>,
-+            {
-+              attachTo: rootElement.shadowRoot,
-+            },
-+          );
-+        }).to.throw(
-+          'ensureListeningTo(): received a container that was not an element node. This is likely a bug in React.',
-+        );
-+      }).toErrorDev(['The above error occurred in the <button> component']);
      });
    });
  });

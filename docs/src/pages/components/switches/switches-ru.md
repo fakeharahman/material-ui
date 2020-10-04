@@ -1,6 +1,8 @@
 ---
-title: Switch React component
+title: React Switch component
 components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
+githubLabel: 'component: Switch'
+materialDesign: 'https://material.io/components/selection-controls#switches'
 ---
 
 # Switch (переключатель)
@@ -9,11 +11,13 @@ components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
 
 [Переключатели](https://material.io/design/components/selection-controls.html#switches) – предпочтительный способ установки параметров на мобильных устройствах. Опция, которую контролирует переключатель, и её состояние должны быть четко описаны в соответствующей метке.
 
-## Basic switches
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
+## Основные переключатели
 
 {{"demo": "pages/components/switches/Switches.js"}}
 
-## Switch with FormControlLabel
+## Переключатель с FormControlLabel
 
 `Switch` can be provided with a description thanks to the `FormControlLabel` component.
 
@@ -21,7 +25,7 @@ components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
 
 ## Переключатели с FormGroup
 
-`FormGroup` - это полезная обертка, используемая для группировки компонентов элементов управления выбором, она предоставляет более простой API. However, you are encouraged you to use [Checkboxes](/components/checkboxes/) instead if multiple related controls are required. (See: [When to use](#when-to-use)).
+`FormGroup` - это полезная обертка, используемая для группировки компонентов элементов управления выбором, она предоставляет более простой API. `FormGroup` - это полезная обертка, используемая для группировки компонентов элементов управления выбором, она предоставляет более простой API. (See: [When to use](#when-to-use)).
 
 {{"demo": "pages/components/switches/SwitchesGroup.js"}}
 
@@ -35,7 +39,7 @@ components: Switch, FormControl, FormGroup, FormLabel, FormControlLabel
 
 ## Размеры
 
-Fancy smaller switches? Use the `size` property.
+Fancy smaller switches? Use the `size` prop.
 
 {{"demo": "pages/components/switches/SwitchesSize.js"}}
 

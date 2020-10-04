@@ -6,12 +6,14 @@ import MuiTab from '@material-ui/core/Tab';
 import { Icon } from './Icon';
 
 interface Props {
+  allowScrollButtonsMobile: boolean;
   centered: boolean;
   indicatorColor: 'primary' | 'secondary';
-  scrollButtons: 'auto' | 'desktop' | 'off' | 'on';
+  scrollButtons: 'auto' | false | true;
   selectionFollowsFocus?: boolean;
   textColor: 'inherit' | 'primary' | 'secondary';
   variant: 'fullWidth' | 'scrollable' | 'standard';
+  visibleScrollbar: boolean;
   appBarColor?: 'default' | 'primary' | 'secondary' | 'inherit';
   icons: string[];
   labels: string[];
@@ -24,7 +26,7 @@ export function Tabs(props: Props): JSX.Element {
 
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -52,11 +54,13 @@ export function Tabs(props: Props): JSX.Element {
 }
 
 Tabs.defaultProps = {
+  allowScrollButtonsMobile: false,
   centered: false,
   indicatorColor: 'secondary' as 'secondary',
   scrollButtons: 'auto' as 'auto',
   textColor: 'inherit' as 'inherit',
   variant: 'standard' as 'standard',
+  visibleScrollbar: false,
   icons: ['phone', 'favorite', 'person_pin'],
   labels: ['Tab 1', 'Tab 2', 'Tab 3'],
   width: 500,
@@ -64,6 +68,10 @@ Tabs.defaultProps = {
 };
 
 addPropertyControls(Tabs, {
+  allowScrollButtonsMobile: {
+    type: ControlType.Boolean,
+    title: 'Allow scroll buttons mobile',
+  },
   centered: {
     type: ControlType.Boolean,
     title: 'Centered',
@@ -76,7 +84,7 @@ addPropertyControls(Tabs, {
   scrollButtons: {
     type: ControlType.Enum,
     title: 'Scroll buttons',
-    options: ['auto', 'desktop', 'off', 'on'],
+    options: ['auto', false, true],
   },
   selectionFollowsFocus: {
     type: ControlType.Boolean,
@@ -91,6 +99,10 @@ addPropertyControls(Tabs, {
     type: ControlType.Enum,
     title: 'Variant',
     options: ['fullWidth', 'scrollable', 'standard'],
+  },
+  visibleScrollbar: {
+    type: ControlType.Boolean,
+    title: 'Visible scrollbar',
   },
   appBarColor: {
     type: ControlType.Enum,

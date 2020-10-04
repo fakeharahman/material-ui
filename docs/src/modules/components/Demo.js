@@ -112,7 +112,6 @@ const useDemoToolbarStyles = makeStyles(
 const alwaysTrue = () => true;
 
 /**
- *
  * @param {React.Ref<HTMLElement>[]} controlRefs
  * @param {object} [options]
  * @param {(index: number) => boolean} [options.isFocusableControl] In case certain controls become unfocusable
@@ -455,11 +454,10 @@ function DemoToolbar(props) {
               open={showSourceHint && atLeastSmallViewport ? true : undefined}
               PopperProps={{ disablePortal: true }}
               title={showCodeLabel}
-              placement="top"
+              placement="bottom"
             >
               <IconButton
                 aria-controls={openDemoSource ? demoSourceId : null}
-                aria-label={showCodeLabel}
                 data-ga-event-category="demo"
                 data-ga-event-label={demoOptions.demo}
                 data-ga-event-action="expand"
@@ -474,10 +472,9 @@ function DemoToolbar(props) {
               <Tooltip
                 classes={{ popper: classes.tooltip }}
                 title={t('codesandbox')}
-                placement="top"
+                placement="bottom"
               >
                 <IconButton
-                  aria-label={t('codesandbox')}
                   data-ga-event-category="demo"
                   data-ga-event-label={demoOptions.demo}
                   data-ga-event-action="codesandbox"
@@ -488,9 +485,12 @@ function DemoToolbar(props) {
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip classes={{ popper: classes.tooltip }} title={t('copySource')} placement="top">
+            <Tooltip
+              classes={{ popper: classes.tooltip }}
+              title={t('copySource')}
+              placement="bottom"
+            >
               <IconButton
-                aria-label={t('copySource')}
                 data-ga-event-category="demo"
                 data-ga-event-label={demoOptions.demo}
                 data-ga-event-action="copy"
@@ -500,9 +500,12 @@ function DemoToolbar(props) {
                 <FileCopyIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip classes={{ popper: classes.tooltip }} title={t('resetFocus')} placement="top">
+            <Tooltip
+              classes={{ popper: classes.tooltip }}
+              title={t('resetFocus')}
+              placement="bottom"
+            >
               <IconButton
-                aria-label={t('resetFocus')}
                 data-ga-event-category="demo"
                 data-ga-event-label={demoOptions.demo}
                 data-ga-event-action="reset-focus"
@@ -512,10 +515,13 @@ function DemoToolbar(props) {
                 <ResetFocusIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip classes={{ popper: classes.tooltip }} title={t('resetDemo')} placement="top">
+            <Tooltip
+              classes={{ popper: classes.tooltip }}
+              title={t('resetDemo')}
+              placement="bottom"
+            >
               <IconButton
                 aria-controls={demoId}
-                aria-label={t('resetDemo')}
                 data-ga-event-category="demo"
                 data-ga-event-label={demoOptions.demo}
                 data-ga-event-action="reset"
@@ -529,7 +535,6 @@ function DemoToolbar(props) {
               onClick={handleMoreClick}
               aria-owns={anchorEl ? 'demo-menu-more' : undefined}
               aria-haspopup="true"
-              aria-label={t('seeMore')}
               {...getControlProps(7)}
             >
               <MoreVertIcon fontSize="small" />
@@ -622,8 +627,8 @@ const useStyles = makeStyles(
   (theme) => ({
     root: {
       marginBottom: 40,
-      marginLeft: -theme.spacing(2),
-      marginRight: -theme.spacing(2),
+      marginLeft: theme.spacing(-2),
+      marginRight: theme.spacing(-2),
       [theme.breakpoints.up('sm')]: {
         padding: theme.spacing(0, 1),
         marginLeft: 0,
@@ -659,7 +664,7 @@ const useStyles = makeStyles(
     /* Make no difference between the demo and the markdown. */
     demoBgInline: {
       // Maintain alignment with the markdown text
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(3),
       },
     },
@@ -700,8 +705,8 @@ const useStyles = makeStyles(
   { name: 'Demo' },
 );
 
-function Demo(props) {
-  const { demo, demoOptions, githubLocation } = props;
+export default function Demo(props) {
+  const { demo, demoOptions, disableAd, githubLocation } = props;
   const classes = useStyles();
   const t = useSelector((state) => state.options.t);
   const codeVariant = useSelector((state) => state.options.codeVariant);
@@ -821,7 +826,7 @@ function Demo(props) {
           />
         </div>
       </Collapse>
-      {showAd ? <AdCarbonInline /> : null}
+      {showAd && !disableAd && !demoOptions.disableAd ? <AdCarbonInline /> : null}
     </div>
   );
 }
@@ -829,7 +834,6 @@ function Demo(props) {
 Demo.propTypes = {
   demo: PropTypes.object.isRequired,
   demoOptions: PropTypes.object.isRequired,
+  disableAd: PropTypes.bool.isRequired,
   githubLocation: PropTypes.string.isRequired,
 };
-
-export default Demo;

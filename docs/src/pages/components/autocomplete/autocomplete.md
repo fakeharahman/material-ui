@@ -1,9 +1,8 @@
 ---
-title: Autocomplete React component
+title: React Autocomplete component
 components: TextField, Popper, Autocomplete
-githubLabel: component: Autocomplete
+githubLabel: 'component: Autocomplete'
 waiAria: https://www.w3.org/TR/wai-aria-practices/#combobox
-packageName: @material-ui/lab
 ---
 
 # Autocomplete
@@ -118,7 +117,7 @@ related to the rendering of JSX.
 The Autocomplete component uses this hook internally.
 
 ```jsx
-import useAutocomplete from '@material-ui/lab/useAutocomplete';
+import useAutocomplete from '@material-ui/core/useAutocomplete';
 ```
 
 - 📦 [4.5 kB gzipped](/size-snapshot).
@@ -133,11 +132,24 @@ Head to the [customization](#customization) section for an example with the `Aut
 
 ## Asynchronous requests
 
+The component supports two different asynchronous use-cases:
+
+- [Load on open](#load-on-open): it waits for the component to be interacted with to load the options.
+- [Search as you type](#search-as-you-type): a new request is made for each keystroke.
+
+### Load on open
+
+It displays a progress state as long as the network request is pending.
+
 {{"demo": "pages/components/autocomplete/Asynchronous.js"}}
 
-If your logic is fetching new options on each keystroke and,
-using the current value of the textbox to filter on the server,
-you need to disable the built-in filtering of the autocomplete component:
+### Search as you type
+
+If your logic is fetching new options on each keystroke and using the current value of the textbox
+to filter on the server, you may want to consider throttling requests.
+
+Additionally, you will need to disable the built-in filtering of the `Autocomplete` component by
+overriding the `filterOptions` prop:
 
 ```jsx
 <Autocomplete filterOptions={(x) => x} />
@@ -211,7 +223,7 @@ The component exposes a factory to create a filter method that can provided to t
 You can use it to change the default option filter behavior.
 
 ```js
-import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/core/Autocomplete';
 ```
 
 ### `createFilterOptions(config) => filterOptions`

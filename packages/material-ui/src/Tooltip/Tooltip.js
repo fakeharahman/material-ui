@@ -7,6 +7,7 @@ import withStyles from '../styles/withStyles';
 import capitalize from '../utils/capitalize';
 import Grow from '../Grow';
 import Popper from '../Popper';
+import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
 import useIsFocusVisible from '../utils/useIsFocusVisible';
@@ -165,6 +166,7 @@ const Tooltip = React.forwardRef(function Tooltip(props, ref) {
     arrow = false,
     children,
     classes,
+    describeChild = false,
     disableFocusListener = false,
     disableHoverListener = false,
     disableTouchListener = false,
@@ -326,22 +328,27 @@ const Tooltip = React.forwardRef(function Tooltip(props, ref) {
     }
   };
 
-  const handleClose = (event) => {
-    clearTimeout(hystersisTimer);
-    hystersisTimer = setTimeout(() => {
-      hystersisOpen = false;
-    }, 800 + leaveDelay);
-    setOpenState(false);
+  const handleClose = useEventCallback(
+    /**
+     * @param {React.SyntheticEvent | Event} event
+     */
+    (event) => {
+      clearTimeout(hystersisTimer);
+      hystersisTimer = setTimeout(() => {
+        hystersisOpen = false;
+      }, 800 + leaveDelay);
+      setOpenState(false);
 
-    if (onClose) {
-      onClose(event);
-    }
+      if (onClose) {
+        onClose(event);
+      }
 
-    clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => {
-      ignoreNonTouchEvents.current = false;
-    }, theme.transitions.duration.shortest);
-  };
+      clearTimeout(closeTimer.current);
+      closeTimer.current = setTimeout(() => {
+        ignoreNonTouchEvents.current = false;
+      }, theme.transitions.duration.shortest);
+    },
+  );
 
   const handleLeave = (forward = true) => (event) => {
     const childrenProps = children.props;
@@ -402,6 +409,28 @@ const Tooltip = React.forwardRef(function Tooltip(props, ref) {
     }, leaveTouchDelay);
   };
 
+  React.useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    /**
+     * @param {KeyboardEvent} nativeEvent
+     */
+    function handleKeyDown(nativeEvent) {
+      // IE 11, Edge (prior to using Bink?) use 'Esc'
+      if (nativeEvent.key === 'Escape' || nativeEvent.key === 'Esc') {
+        handleClose(nativeEvent);
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleClose, open]);
+
   const handleUseRef = useForkRef(setChildNode, ref);
   const handleFocusRef = useForkRef(focusVisibleRef, handleUseRef);
   const handleRef = useForkRef(children.ref, handleFocusRef);
@@ -411,15 +440,18 @@ const Tooltip = React.forwardRef(function Tooltip(props, ref) {
     open = false;
   }
 
-  // For accessibility and SEO concerns, we render the title to the DOM node when
-  // the tooltip is hidden. However, we have made a tradeoff when
-  // `disableHoverListener` is set. This title logic is disabled.
-  // It's allowing us to keep the implementation size minimal.
-  // We are open to change the tradeoff.
-  const shouldShowNativeTitle = !open && !disableHoverListener;
+  const nameOrDescProps = {};
+  const titleIsString = typeof title === 'string';
+  if (describeChild) {
+    nameOrDescProps['title'] = !open && titleIsString && !disableHoverListener ? title : null;
+    nameOrDescProps['aria-describedby'] = open ? id : null;
+  } else {
+    nameOrDescProps['aria-label'] = titleIsString ? title : null;
+    nameOrDescProps['aria-labelledby'] = open && !titleIsString ? id : null;
+  }
+
   const childrenProps = {
-    'aria-describedby': open ? id : null,
-    title: shouldShowNativeTitle && typeof title === 'string' ? title : null,
+    ...nameOrDescProps,
     ...other,
     ...children.props,
     className: clsx(other.className, children.props.className),
@@ -492,7 +524,7 @@ const Tooltip = React.forwardRef(function Tooltip(props, ref) {
         placement={placement}
         anchorEl={childNode}
         open={childNode ? open : false}
-        id={childrenProps['aria-describedby']}
+        id={id}
         transition
         {...interactiveWrapperListeners}
         {...mergedPopperProps}
@@ -530,6 +562,7 @@ Tooltip.propTypes = {
   // ----------------------------------------------------------------------
   /**
    * If `true`, adds an arrow to the tooltip.
+   * @default false
    */
   arrow: PropTypes.bool,
   /**
@@ -545,28 +578,40 @@ Tooltip.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * Set to `true` if the `title` acts as an accessible description.
+   * By default the `title` acts as an accessible label for the child.
+   * @default false
+   */
+  describeChild: PropTypes.bool,
+  /**
    * Do not respond to focus events.
+   * @default false
    */
   disableFocusListener: PropTypes.bool,
   /**
    * Do not respond to hover events.
+   * @default false
    */
   disableHoverListener: PropTypes.bool,
   /**
    * Do not respond to long press touch events.
+   * @default false
    */
   disableTouchListener: PropTypes.bool,
   /**
    * The number of milliseconds to wait before showing the tooltip.
    * This prop won't impact the enter touch delay (`enterTouchDelay`).
+   * @default 100
    */
   enterDelay: PropTypes.number,
   /**
    * The number of milliseconds to wait before showing the tooltip when one was already recently opened.
+   * @default 0
    */
   enterNextDelay: PropTypes.number,
   /**
    * The number of milliseconds a user must touch the element before showing the tooltip.
+   * @default 700
    */
   enterTouchDelay: PropTypes.number,
   /**
@@ -577,15 +622,18 @@ Tooltip.propTypes = {
   /**
    * Makes a tooltip interactive, i.e. will not close when the user
    * hovers over the tooltip before the `leaveDelay` is expired.
+   * @default false
    */
   interactive: PropTypes.bool,
   /**
    * The number of milliseconds to wait before hiding the tooltip.
    * This prop won't impact the leave touch delay (`leaveTouchDelay`).
+   * @default 0
    */
   leaveDelay: PropTypes.number,
   /**
    * The number of milliseconds after the user stops touching an element before hiding the tooltip.
+   * @default 1500
    */
   leaveTouchDelay: PropTypes.number,
   /**
@@ -606,6 +654,7 @@ Tooltip.propTypes = {
   open: PropTypes.bool,
   /**
    * Tooltip placement.
+   * @default 'bottom'
    */
   placement: PropTypes.oneOf([
     'bottom-end',
@@ -623,6 +672,7 @@ Tooltip.propTypes = {
   ]),
   /**
    * The component used for the popper.
+   * @default Popper
    */
   PopperComponent: PropTypes.elementType,
   /**
@@ -636,6 +686,7 @@ Tooltip.propTypes = {
   /**
    * The component used for the transition.
    * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
+   * @default Grow
    */
   TransitionComponent: PropTypes.elementType,
   /**

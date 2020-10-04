@@ -1,11 +1,15 @@
 ---
-title: Componente React para Navegação estrutural
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
+githubLabel: 'component: Breadcrumbs'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#breadcrumb'
 ---
 
 # Navegação estrutural
 
 <p class="description">Navegação estrutural permite aos usuários fazer seleções em um intervalo de caminhos.</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Navegação estrutural simples
 

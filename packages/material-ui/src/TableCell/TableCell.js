@@ -17,7 +17,7 @@ export const styles = (theme) => ({
     // Removes the alpha (sets it to 1), and lightens or darkens the theme color.
     borderBottom: `1px solid
     ${
-      theme.palette.type === 'light'
+      theme.palette.mode === 'light'
         ? lighten(fade(theme.palette.divider, 1), 0.88)
         : darken(fade(theme.palette.divider, 1), 0.68)
     }`,
@@ -163,6 +163,7 @@ TableCell.propTypes = {
    *
    * Monetary or generally number fields **should be right aligned** as that allows
    * you to add them up quickly in your head without having to worry about decimals.
+   * @default 'inherit'
    */
   align: PropTypes.oneOf(['center', 'inherit', 'justify', 'left', 'right']),
   /**
@@ -184,7 +185,7 @@ TableCell.propTypes = {
   component: PropTypes.elementType,
   /**
    * Sets the padding applied to the cell.
-   * By default, the Table parent component set the value (`default`).
+   * The prop defaults to the value (`'default'`) inherited from the parent Table component.
    */
   padding: PropTypes.oneOf(['checkbox', 'default', 'none']),
   /**
@@ -193,7 +194,7 @@ TableCell.propTypes = {
   scope: PropTypes.string,
   /**
    * Specify the size of the cell.
-   * By default, the Table parent component set the value (`medium`).
+   * The prop defaults to the value (`'medium'`) inherited from the parent Table component.
    */
   size: PropTypes.oneOf(['medium', 'small']),
   /**
@@ -202,7 +203,7 @@ TableCell.propTypes = {
   sortDirection: PropTypes.oneOf(['asc', 'desc', false]),
   /**
    * Specify the cell type.
-   * By default, the TableHead, TableBody or TableFooter parent component set the value.
+   * The prop defaults to the value inherited from the parent TableHead, TableBody, or TableFooter components.
    */
   variant: PropTypes.oneOf(['body', 'footer', 'head']),
 };

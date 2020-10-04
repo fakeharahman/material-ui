@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FeaturedPost(props) {
+function FeaturedPost(props) {
   const classes = useStyles();
   const { post } = props;
 
@@ -45,11 +45,11 @@ export default function FeaturedPost(props) {
               </Typography>
             </CardContent>
           </div>
-          <Hidden xsDown>
+          <Hidden smDown>
             <CardMedia
               className={classes.cardMedia}
               image={post.image}
-              title={post.imageTitle}
+              title={post.imageText}
             />
           </Hidden>
         </Card>
@@ -59,5 +59,13 @@ export default function FeaturedPost(props) {
 }
 
 FeaturedPost.propTypes = {
-  post: PropTypes.object,
+  post: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    imageText: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
+
+export default FeaturedPost;

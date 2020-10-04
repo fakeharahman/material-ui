@@ -105,7 +105,7 @@ module.exports = async function webpackConfig() {
   const config = {
     entry,
     // ideally this would be computed from the bundles peer dependencies
-    externals: /^(react|react-dom)$/,
+    externals: /^(react|react-dom|react\/jsx-runtime)$/,
     mode: 'production',
     output: {
       filename: '[name].js',
@@ -116,6 +116,14 @@ module.exports = async function webpackConfig() {
       alias: {
         '@material-ui/core': path.join(workspaceRoot, 'packages/material-ui/build'),
         '@material-ui/lab': path.join(workspaceRoot, 'packages/material-ui-lab/build'),
+        '@material-ui/styled-engine': path.join(
+          workspaceRoot,
+          'packages/material-ui-styled-engine/build',
+        ),
+        '@material-ui/styled-engine-sc': path.join(
+          workspaceRoot,
+          'packages/material-ui-styles-sc/build',
+        ),
         '@material-ui/styles': path.join(workspaceRoot, 'packages/material-ui-styles/build'),
         '@material-ui/system': path.join(workspaceRoot, 'packages/material-ui-system/build'),
         '@material-ui/utils': path.join(workspaceRoot, 'packages/material-ui-utils/build'),

@@ -1,6 +1,9 @@
 ---
-title: Tabs React-Komponente
+title: React Tabs component
 components: Tabs, Tab, TabScrollButton, TabContext, TabList, TabPanel
+githubLabel: 'component: Tabs'
+materialDesign: https://material.io/components/tabs
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#tabpanel'
 ---
 
 # Tabs
@@ -9,11 +12,13 @@ components: Tabs, Tab, TabScrollButton, TabContext, TabList, TabPanel
 
 [Tabs](https://material.io/design/components/tabs.html) organisieren und ermöglichen die Navigation zwischen zusammengehörigen Inhaltsgruppen auf derselben Hierarchieebene.
 
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
 ## Einfache Tabs
 
-Ein einfaches Beispiel ohne Verzierungen.
-
 {{"demo": "pages/components/tabs/SimpleTabs.js", "bg": true}}
+
+{{"demo": "pages/components/tabs/BasicTabs.js", "bg": true}}
 
 ### Umbrechen von Tab Beschriftungen
 
@@ -47,19 +52,29 @@ Die Eigenschaft `centered` sollte für kleinere Ansichten verwendet werden.
 
 ### Automatische Scroll-Tasten
 
-Bildlauftasten werden auf der linken und rechten Seite angezeigt, wenn der Tab breiter als der viewport ist. Auf mobilen Endgeräten werden diese Buttons nicht angezeigt. (based on viewport width)
+By default, left and right scroll buttons are automatically presented on desktop and hidden on mobile. All scrolling must be initiated through user agent scrolling mechanisms (e.g. left/right swipe, shift-mousewheel, etc.)
 
 {{"demo": "pages/components/tabs/ScrollableTabsButtonAuto.js", "bg": true}}
 
 ### Erzwungene Bildlaufschaltflächen
 
-Die linken und rechten Bildlauftasten werden unabhängig von der Breite des Ansichtsfensters angezeigt.
+Left and right scroll buttons be presented (reserve space) regardless of the viewport width with `scrollButtons={true}` `allowScrollButtonsMobile`:
 
 {{"demo": "pages/components/tabs/ScrollableTabsButtonForce.js", "bg": true}}
 
+If you want to make sure the buttons are always visible, you should customize the opacity.
+
+```css
+.MuiTabs-scrollButtons.Mui-disabled {
+  opacity: 0.3;
+}
+```
+
+{{"demo": "pages/components/tabs/ScrollableTabsButtonVisible.js", "bg": true}}
+
 ### Scrolltasten verhindern
 
-Left and right scroll buttons will never be presented. All scrolling must be initiated through user agent scrolling mechanisms (e.g. left/right swipe, shift-mousewheel, etc.)
+Left and right scroll buttons are never be presented with `scrollButtons={false}`. All scrolling must be initiated through user agent scrolling mechanisms (e.g. left/right swipe, shift-mousewheel, etc.)
 
 {{"demo": "pages/components/tabs/ScrollableTabsButtonPrevent.js", "bg": true}}
 
@@ -73,7 +88,11 @@ Hier ist ein Beispiel zum Anpassen der Komponente. Mehr dazu erfahren Sie auf de
 
 ## Vertikale Tabs
 
+Tab-Beschriftungen können entweder nur Symbole oder nur Text enthalten.
+
 {{"demo": "pages/components/tabs/VerticalTabs.js", "bg": true}}
+
+Note that you can restore the scrollbar with `visibleScrollbar`.
 
 ## Nav-Tabs
 

@@ -1,6 +1,8 @@
 ---
-title: Liste des composants React
+title: React List component
 components: Collapse, Divider, List, ListItem, ListItemAvatar, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader
+githubLabel: 'component: List'
+materialDesign: https://material.io/components/lists
 ---
 
 # Lists (Listes)
@@ -8,6 +10,8 @@ components: Collapse, Divider, List, ListItem, ListItemAvatar, ListItemIcon, Lis
 <p class="description">Les listes sont continues, des index verticaux de texte ou d’images.</p>
 
 [Les listes](https://material.io/design/components/lists.html) sont des groupes successifs de textes ou d'images. Ils sont composés d'items contenant les actions primaires ou secondaires, représentées par des icônes et/ou du texte.
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Liste simple
 
@@ -22,9 +26,11 @@ function ListItemLink(props) {
 
 //...
 
-<ListItemLink href="#simple-list">
-  <ListItemText primary="Spam" />
-</ListItemLink>
+function ListItemLink(props) {
+  return <ListItem button component="a" {...props} />;
+}
+
+//...
 ```
 
 Vous pouvez trouver une [démonstration avec la bibliothèque React Router en suivant cette section](/guides/composition/#react-router) de la documentation.
@@ -39,7 +45,7 @@ Vous pouvez trouver une [démonstration avec la bibliothèque React Router en su
 
 ## Interactif
 
-Vous trouverez ci-dessous une démo interactive vous permettant d'explorer les résultats visuels utilisant différents paramètres:
+Vous trouverez ci-dessous une démo interactive vous permettant d'explorer les résultats visuels des différents paramètres:
 
 {{"demo": "pages/components/lists/InteractiveList.js", "bg": true}}
 
@@ -87,12 +93,18 @@ This feature relies on CSS sticky positioning. Unfortunately it's [not implement
 
 ## Liste virtualisée
 
+When rendering a list within a component that defines its own gutters, `ListItem` gutters can be disabled with `disableGutters`.
+
+{{"demo": "pages/components/lists/GutterlessList.js", "bg": true}}
+
+## Liste virtualisée
+
 Dans l'exemple suivant, nous montrons comment utiliser [react-virtualized](https://github.com/bvaughn/react-window) avec le composant `List`. Il affiche 200 lignes et peut facilement gérer plus. La virtualisation aide à résoudre les problèmes de performances.
 
 {{"demo": "pages/components/lists/VirtualizedList.js", "bg": true}}
 
-The use of [react-window](https://github.com/bvaughn/react-window) when possible is encouraged. If this library doesn't cover your use case, you should consider using [react-virtualized](https://github.com/bvaughn/react-virtualized), then alternatives like [react-virtuoso](https://github.com/petyosi/react-virtuoso).
+If this library doesn't cover your use case, you should consider using [react-virtualized](https://github.com/bvaughn/react-virtualized), then alternatives like [react-virtuoso](https://github.com/petyosi/react-virtuoso). The use of [react-window](https://github.com/bvaughn/react-window) when possible is encouraged.
 
 ## Personnalisation
 
-🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/list-item).
+🎨 Si vous cherchez de l'inspiration, vous pouvez consulter les [exemples de personnalisation de MUI Treasury](https://mui-treasury.com/styles/list-item).

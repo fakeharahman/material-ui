@@ -1,6 +1,9 @@
 ---
-title: Checkbox React component
+title: React Checkbox component
 components: Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel
+materialDesign: 'https://material.io/components/selection-controls#checkboxes'
+githubLabel: 'component: Checkbox'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#checkbox'
 ---
 
 # Checkbox
@@ -11,17 +14,25 @@ components: Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel
 
 Si tienes varias opciones en una lista, puedes ahorrar espacio usando checkboxes en lugar de utilizar interruptores de encendedido/apagado. Si tienes una única opción, evita usar un checkbox y utiliza un interruptor de encendido/apagado en su lugar.
 
-## Basic checkboxes
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
+## Checkboxes básicos
 
 {{"demo": "pages/components/checkboxes/Checkboxes.js"}}
 
-## Checkbox with FormControlLabel
+## Checkbox con FormControlLabel
 
-`Checkbox` can be provided with a label thanks to the `FormControlLabel` component.
+A checkbox input can only have two states in a form: checked or unchecked. It either submits its value or doesn't. Visually, there are actually three states a checkbox can be in: checked, unchecked, or indeterminate.
+
+`Checkbox` puede ser provisto de una etiqueta gracias al componente `FormControlLabel`.
+
+## Checkboxes con FormGroup
+
+`Checkbox` puede ser provisto de una etiqueta gracias al componente `FormControlLabel`.
 
 {{"demo": "pages/components/checkboxes/CheckboxLabels.js"}}
 
-## Checkboxes con FormGroup
+## Ubicación de Etiqueta
 
 `FormGroup` es un contenedor muy útil usado para agrupar componentes de controles de selección que proporciona una API más sencilla.
 
@@ -35,13 +46,13 @@ Puede cambiar la ubicación de la etiqueta:
 
 ## Customized checkbox
 
-Here is an example of customizing the component. You can learn more about this in the [overrides documentation page](/customization/components/).
+He aquí un ejemplo de personalización del componente. You can learn more about this in the [overrides documentation page](/customization/components/).
 
 {{"demo": "pages/components/checkboxes/CustomizedCheckbox.js", "defaultCodeOpen": false}}
 
-🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/checkbox).
+🎨 Si estás buscando inspiración, puedes mirar [los ejemplos de MUI Treasury](https://mui-treasury.com/styles/checkbox).
 
-## When to use
+## Cuándo usarlo
 
 - [Checkboxes vs. Botones de selección](https://www.nngroup.com/articles/checkboxes-vs-radio-buttons/)
 - [Checkboxes vs. Interruptores](https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8)

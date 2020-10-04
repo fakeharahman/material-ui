@@ -1,6 +1,9 @@
 ---
-title: Checkbox React component
+title: React Checkbox component
 components: Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel
+materialDesign: 'https://material.io/components/selection-controls#checkboxes'
+githubLabel: 'component: Checkbox'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#checkbox'
 ---
 
 # Checkbox
@@ -11,17 +14,25 @@ components: Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel
 
 Если у вас есть несколько опций, отображаемых в списке, вы можете сохранить пространство, используя чекбоксы вместо переключателей. Если у вас есть только один вариант, лучше не использовать чекбокс, вместо него используйте переключатель включения / выключения.
 
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
 ## Basic checkboxes
 
 {{"demo": "pages/components/checkboxes/Checkboxes.js"}}
 
 ## Checkbox with FormControlLabel
 
+A checkbox input can only have two states in a form: checked or unchecked. It either submits its value or doesn't. Visually, there are actually three states a checkbox can be in: checked, unchecked, or indeterminate.
+
+{{"demo": "pages/components/checkboxes/IndeterminateCheckbox.js"}}
+
+## Чекбоксы с FormGroup
+
 `Checkbox` can be provided with a label thanks to the `FormControlLabel` component.
 
 {{"demo": "pages/components/checkboxes/CheckboxLabels.js"}}
 
-## Чекбоксы с FormGroup
+## Расположение метки
 
 `FormGroup` - это полезная обертка, используемая для группировки компонентов элементов управления выбором, она предоставляет более простой API.
 

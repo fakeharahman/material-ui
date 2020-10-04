@@ -6,7 +6,7 @@ import prism from 'docs/src/modules/utils/prism';
 
 const headerRegExp = /---[\r\n]([\s\S]*)[\r\n]---/;
 const titleRegExp = /# (.*)[\r\n]/;
-const descriptionRegExp = /<p class="description">(.*)<\/p>[\r\n]/;
+const descriptionRegExp = /<p class="description">(.*)<\/p>/s;
 const headerKeyValueRegExp = /(.*?): (.*)/g;
 const emptyRegExp = /^\s*$/;
 const notEnglishMarkdownRegExp = /-([a-z]{2})\.md$/;
@@ -41,7 +41,9 @@ export function getHeaders(markdown) {
 
   // eslint-disable-next-line no-cond-assign
   while ((regexMatches = headerKeyValueRegExp.exec(header)) !== null) {
-    headers[regexMatches[1]] = regexMatches[2];
+    const key = regexMatches[1];
+    const value = regexMatches[2].replace(/'(.*)'/, '$1');
+    headers[key] = value;
   }
 
   if (headers.components) {
@@ -76,12 +78,11 @@ export function getTitle(markdown) {
 export function getDescription(markdown) {
   const matches = markdown.match(descriptionRegExp);
 
-  return matches?.[1];
+  return matches?.[1].trim();
 }
 
 /**
  * Render markdown used in the Material-UI docs
- *
  * @param {string} markdown
  * @param {object} [options]
  * @param {function} [options.highlight] - https://marked.js.org/#/USING_ADVANCED.md#highlight
@@ -118,7 +119,6 @@ const externs = [
 ];
 
 /**
- *
  * @param {object} config
  * @param {() => string} config.requireRaw - returnvalue of require.context
  * @param {string} config.pageFilename - filename relative to nextjs pages directory

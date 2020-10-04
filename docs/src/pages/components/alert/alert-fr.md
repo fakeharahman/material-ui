@@ -1,6 +1,8 @@
 ---
-title: Composant Alert React
+title: React Alert component
 components: Alert, AlertTitle
+githubLabel: 'component: Alert'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#alert'
 ---
 
 # Alert
@@ -9,11 +11,13 @@ components: Alert, AlertTitle
 
 **Remarque :** Ce composant n'est pas documenté dans les [consignes de Material Design](https://material.io/), mais Material-UI le supporte.
 
+{{"component": "modules/components/ComponentLinkHeader.js"}}
+
 ## Alertes simples
 
 L'alerte offre quatre niveaux de sévérité qui définissent une icône et une couleur distinctes.
 
-{{"demo": "pages/components/alert/SimpleAlerts.js"}}
+{{"demo": "pages/components/alert/BasicAlerts.js"}}
 
 ## Description
 

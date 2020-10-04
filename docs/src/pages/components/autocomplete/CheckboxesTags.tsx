@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/core/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
@@ -17,8 +17,8 @@ export default function CheckboxesTags() {
       options={top100Films}
       disableCloseOnSelect
       getOptionLabel={(option) => option.title}
-      renderOption={(option, { selected }) => (
-        <React.Fragment>
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
           <Checkbox
             icon={icon}
             checkedIcon={checkedIcon}
@@ -26,7 +26,7 @@ export default function CheckboxesTags() {
             checked={selected}
           />
           {option.title}
-        </React.Fragment>
+        </li>
       )}
       style={{ width: 500 }}
       renderInput={(params) => (

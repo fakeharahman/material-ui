@@ -13,7 +13,7 @@ export const styles = (theme) => ({
     paddingLeft: 8 + 12, // margin + half icon
     paddingRight: 8,
     borderLeft: `1px solid ${
-      theme.palette.type === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
+      theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
     }`,
   },
   /* Styles applied to the root element if `last={true}` (controlled by `Step`). */
@@ -87,6 +87,7 @@ StepContent.propTypes = {
   /**
    * The component used for the transition.
    * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
+   * @default Collapse
    */
   TransitionComponent: PropTypes.elementType,
   /**
@@ -94,6 +95,7 @@ StepContent.propTypes = {
    * Passed as a prop to the transition component.
    *
    * Set to 'auto' to automatically calculate transition time based on height.
+   * @default 'auto'
    */
   transitionDuration: PropTypes.oneOfType([
     PropTypes.oneOf(['auto']),

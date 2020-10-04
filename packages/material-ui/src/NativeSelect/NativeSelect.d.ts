@@ -39,10 +39,12 @@ export interface NativeSelectProps
   };
   /**
    * The icon that displays the arrow.
+   * @default ArrowDropDownIcon
    */
   IconComponent?: React.ElementType;
   /**
    * An `Input` element; does not have to be a material-ui specific `Input`.
+   * @default <Input />
    */
   input?: React.ReactElement<any, any>;
   /**
@@ -50,7 +52,7 @@ export interface NativeSelectProps
    */
   inputProps?: NativeSelectInputProps;
   /**
-   * Callback function fired when a menu item is selected.
+   * Callback fired when a menu item is selected.
    *
    * @param {object} event The event source of the callback.
    * You can pull out the new value by accessing `event.target.value` (string).

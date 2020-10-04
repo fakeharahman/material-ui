@@ -7,7 +7,7 @@ Material-UI usa [um fator de escala recomendado de 8px](https://material.io/desi
 ```js
 const theme = createMuiTheme();
 
-theme.spacing(2) // = 8 * 2
+theme.spacing(2); // `${8 * 2}px` = '16px'
 ```
 
 ## Espaçamento customizado
@@ -21,7 +21,7 @@ const theme = createMuiTheme({
   spacing: 4,
 });
 
-theme.spacing(2) // = 4 * 2
+theme.spacing(2); // `${4 * 2}px` = '8px'
 ```
 
 - uma função
@@ -34,22 +34,22 @@ const theme = createMuiTheme({
 theme.spacing(2); // = 0.25 * 2rem = 0.5rem = 8px
 ```
 
-- um vetor
+- uma matriz
 
 ```js
 const theme = createMuiTheme({
   spacing: [0, 4, 8, 16, 32, 64],
 });
 
-theme.spacing(2); // = 8
+theme.spacing(2); // = '8px'
 ```
 
 ## Aridade múltipla
 
-O auxiliar ` theme.spacing()` aceita até 4 argumentos. Você pode usar os argumentos para reduzir o trabalho.
+O auxiliar `theme.spacing()` aceita até 4 argumentos. Você pode usar os argumentos para reduzir o trabalho.
 
 ```diff
--padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`, // '8px 16px'
+-padding: `${theme.spacing(1)} ${theme.spacing(2)}`, // '8px 16px'
 +padding: theme.spacing(1, 2), // '8px 16px'
 ```
 

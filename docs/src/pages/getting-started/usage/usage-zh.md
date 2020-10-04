@@ -30,7 +30,7 @@ ReactDOM.render(<App />, document.querySelector('#app'));
 
 {{"demo": "pages/getting-started/usage/Usage.js", "hideToolbar": true, "bg": true}}
 
-## 全局变量
+## 全局样式
 
 您能够注意到，有一些重要的全局变量，可以改善 Material-UI 的用户体验。
 
@@ -39,10 +39,7 @@ ReactDOM.render(<App />, document.querySelector('#app'));
 Material-UI 是先在移动设备上开发的，我们采用了首先为移动设备编写代码，然后根据需要使用 CSS media queries（CSS媒体查询）扩展组件的策略。 如要确保所有设备的正确渲染和触摸缩放，请将响应式可视区域的元标记添加到您的`<head>`元素中。
 
 ```html
-<meta
-  name="viewport"
-  content="minimum-scale=1, initial-scale=1, width=device-width"
-/>
+<meta name="viewport" content="initial-scale=1, width=device-width" />
 ```
 
 ### CssBaseline

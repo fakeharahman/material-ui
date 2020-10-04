@@ -6,7 +6,7 @@ import InputBase from '../InputBase';
 import withStyles from '../styles/withStyles';
 
 export const styles = (theme) => {
-  const light = theme.palette.type === 'light';
+  const light = theme.palette.mode === 'light';
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
   const backgroundColor = light ? 'rgba(0, 0, 0, 0.09)' : 'rgba(255, 255, 255, 0.09)';
 
@@ -119,9 +119,9 @@ export const styles = (theme) => {
     input: {
       padding: '25px 12px 8px',
       '&:-webkit-autofill': {
-        WebkitBoxShadow: theme.palette.type === 'light' ? null : '0 0 0 100px #266798 inset',
-        WebkitTextFillColor: theme.palette.type === 'light' ? null : '#fff',
-        caretColor: theme.palette.type === 'light' ? null : '#fff',
+        WebkitBoxShadow: theme.palette.mode === 'light' ? null : '0 0 0 100px #266798 inset',
+        WebkitTextFillColor: theme.palette.mode === 'light' ? null : '#fff',
+        caretColor: theme.palette.mode === 'light' ? null : '#fff',
         borderTopLeftRadius: 'inherit',
         borderTopRightRadius: 'inherit',
       },
@@ -206,6 +206,7 @@ FilledInput.propTypes = {
   classes: PropTypes.object,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
+   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
    */
   color: PropTypes.oneOf(['primary', 'secondary']),
   /**
@@ -214,6 +215,7 @@ FilledInput.propTypes = {
   defaultValue: PropTypes.any,
   /**
    * If `true`, the `input` element will be disabled.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   disabled: PropTypes.bool,
   /**
@@ -225,12 +227,13 @@ FilledInput.propTypes = {
    */
   endAdornment: PropTypes.node,
   /**
-   * If `true`, the input will indicate an error. This is normally obtained via context from
-   * FormControl.
+   * If `true`, the input will indicate an error.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   error: PropTypes.bool,
   /**
    * If `true`, the input will take up the full width of its container.
+   * @default false
    */
   fullWidth: PropTypes.bool,
   /**
@@ -240,10 +243,12 @@ FilledInput.propTypes = {
   /**
    * The component used for the `input` element.
    * Either a string to use a HTML element or a component.
+   * @default 'input'
    */
   inputComponent: PropTypes.elementType,
   /**
    * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes) applied to the `input` element.
+   * @default {}
    */
   inputProps: PropTypes.object,
   /**
@@ -253,6 +258,7 @@ FilledInput.propTypes = {
   /**
    * If `dense`, will adjust vertical spacing. This is normally obtained via context from
    * FormControl.
+   * The prop defaults to the value (`'none'`) inherited from the parent FormControl component.
    */
   margin: PropTypes.oneOf(['dense', 'none']),
   /**
@@ -265,6 +271,7 @@ FilledInput.propTypes = {
   minRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * If `true`, a textarea element will be rendered.
+   * @default false
    */
   multiline: PropTypes.bool,
   /**
@@ -289,6 +296,7 @@ FilledInput.propTypes = {
   readOnly: PropTypes.bool,
   /**
    * If `true`, the `input` element will be required.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   required: PropTypes.bool,
   /**
@@ -301,6 +309,7 @@ FilledInput.propTypes = {
   startAdornment: PropTypes.node,
   /**
    * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
+   * @default 'text'
    */
   type: PropTypes.string,
   /**

@@ -6,7 +6,7 @@ import createTypography from './createTypography';
 import shadows from './shadows';
 import shape from './shape';
 import createSpacing from './createSpacing';
-import transitions from './transitions';
+import { duration, easing, create, getAutoHeightDuration } from './transitions';
 import zIndex from './zIndex';
 
 function createMuiTheme(options = {}, ...args) {
@@ -28,14 +28,15 @@ function createMuiTheme(options = {}, ...args) {
       breakpoints,
       direction: 'ltr',
       mixins: createMixins(breakpoints, spacing, mixinsInput),
-      components: {}, // Inject component overrides
+      components: {}, // Inject component definitions
       palette,
-      shadows,
+      // Don't use [...shadows] until you've verified its transpiled code is not invoking the iterator protocol.
+      shadows: shadows.slice(),
       typography: createTypography(palette, typographyInput),
       spacing,
-      shape,
-      transitions,
-      zIndex,
+      shape: { ...shape },
+      transitions: { duration, easing, create, getAutoHeightDuration },
+      zIndex: { ...zIndex },
     },
     other,
   );
@@ -90,10 +91,10 @@ function createMuiTheme(options = {}, ...args) {
     };
 
     Object.keys(muiTheme.components).forEach((component) => {
-      const overrides = muiTheme.components[component].overrides;
+      const styleOverrides = muiTheme.components[component].styleOverrides;
 
-      if (overrides && component.indexOf('Mui') === 0) {
-        traverse(overrides, component);
+      if (styleOverrides && component.indexOf('Mui') === 0) {
+        traverse(styleOverrides, component);
       }
     });
   }

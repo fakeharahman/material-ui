@@ -1,11 +1,11 @@
 # Globals
 
-<p class="description">The overrides key enables you to customize the appearance of all instances of a component type, while the props key enables you to change the default value(s) of a component's props.</p>
+<p class="description">The styleOverrides key enables you to customize the appearance of all instances of a component type, while the props key enables you to change the default value(s) of a component's props.</p>
 
 ## CSS
 
 When the configuration variables aren't powerful enough, you can take advantage of the
-`overrides` key of the `theme` to potentially change **every single style** injected by Material-UI into the DOM.
+`styleOverrides` key of the `theme` to potentially change **every single style** injected by Material-UI into the DOM.
 That's a really powerful feature.
 
 To override lab components styles with TypeScript, check [this documentation](/components/about-the-lab/#typescript).
@@ -15,7 +15,7 @@ const theme = createMuiTheme({
   components: {
     // Style sheet name ⚛️
     MuiButton: {
-      overrides: {
+      styleOverrides: {
         // Name of the rule
         textPrimary: {
           // Some CSS
@@ -31,7 +31,6 @@ const theme = createMuiTheme({
 
 The list of these customization points for each component is documented under the **Component API** section.
 For instance, you can have a look at the [Button](/api/button/#css).
-Alternatively, you can always have a look at the [implementation](https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/Button/Button.js).
 
 ## Global CSS
 
@@ -41,7 +40,7 @@ If you are using the [CssBaseline](/components/css-baseline/) component to apply
 const theme = createMuiTheme({
   components: {
     MuiCssBaseline: {
-      overrides: {
+      styleOverrides: {
         '@global': {
           html: {
             WebkitFontSmoothing: 'auto',
@@ -64,7 +63,7 @@ return (
 ## Default props
 
 You can change the default props of all the Material-UI components.
-A `props` key is exposed in the `theme` for this use case.
+A `deafaultProps` key is exposed in the `theme`'s components key for this use case.
 
 To override lab components styles with TypeScript, check [this documentation](/components/about-the-lab/#typescript).
 
@@ -73,7 +72,7 @@ const theme = createMuiTheme({
   components: {
     // Name of the component ⚛️
     MuiButtonBase: {
-      props: {
+      defaultProps: {
         // The default props to change
         disableRipple: true, // No more ripple, on the whole application 💣!
       },

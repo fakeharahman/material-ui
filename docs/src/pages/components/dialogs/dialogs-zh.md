@@ -1,6 +1,9 @@
 ---
-title: React Dialog 对话框组件
+title: React 对话框组件
 components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide
+githubLabel: 'component: Dialog'
+materialDesign: https://material.io/components/dialogs
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#dialog_modal'
 ---
 
 # Dialog 对话框
@@ -10,6 +13,8 @@ components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 [对话框](https://material.io/design/components/dialogs.html)是 [modal](/components/modal/) 窗体的一种类型，它通常在应用程序内容之前呈现，来提供一些关键信息，或者要求用户做出决策。 对话框出现的时候会禁用应用程序的所有功能，只有被确认、被取消或已采取其他必要的操作时，对话框会从屏幕中消失。
 
 对话框会带有目的性地打断工作流程，所以请您谨慎使用。
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## 简单的对话框
 

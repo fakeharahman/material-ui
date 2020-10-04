@@ -2,7 +2,7 @@
 
 <p class="description">Material-UIコンポーネントを使用していなくても使う事が出来ます。</p>
 
-Material-UIは、動的なUIを構築するための強固な基盤を提供することを目指しています。 シンプルにするため、**Material-UIで使われているスタイリングソリューションを`@material-ui/styles`で公開しています。** これを使うこともできますが、Material-UIは他の主要なスタイリングソリューション全てと[相互運用が可能](/guides/interoperability/)なので、必要というわけではありません。
+Material-UI's styles are powered by the [@material-ui/styles](https://www.npmjs.com/package/@material-ui/styles) package, (built with JSS). Material-UI's styles are powered by the [@material-ui/styles](https://www.npmjs.com/package/@material-ui/styles) package, (built with JSS). It doesn't have a default theme, and can be used to style React applications that are not using Material-UI components.
 
 ## Material-UIのスタイリングソリューションを使用する理由
 
@@ -11,6 +11,9 @@ In previous versions, Material-UI has used LESS, then a custom inline-style solu
 Material-UI's styling solution is inspired by many other styling libraries such as [styled-components](https://www.styled-components.com/) and [emotion](https://emotion.sh/).
 
 - 💅 You can expect [the same advantages](https://www.styled-components.com/docs/basics#motivation) as styled-components.
+
+<!-- #default-branch-switch -->
+
 - 🚀 It's [blazing fast](https://github.com/mui-org/material-ui/blob/next/packages/material-ui-benchmark/README.md#material-uistyles).
 - 🧩 It's extensible via a [plugin](https://github.com/cssinjs/jss/blob/master/docs/plugins.md) API.
 - ⚡️ It uses [JSS](https://github.com/cssinjs/jss) at its core – a [high performance](https://github.com/cssinjs/jss/blob/master/docs/performance.md) JavaScript to CSS compiler which works at runtime and server-side.
@@ -20,7 +23,7 @@ Material-UI's styling solution is inspired by many other styling libraries such 
 
 > `@material-ui/styles`は`@material-ui/core/styles`を切り出したものです。Material-UIを使わない場合のみインストールの必要があります。
 
-インストールして`package.json` のdependenciesに保存します。次を実行してください。
+次のコマンドを実行してください。これで、あなたの`package.json` に保存できます。
 
 ```sh
 // with npm
@@ -63,7 +66,7 @@ export default function Hook() {
 
 ### Styled components API
 
-注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。
+注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。 注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。
 
 ```jsx
 import * as React from 'react';
@@ -123,7 +126,7 @@ export default withStyles(styles)(HigherOrderComponent);
 
 ## Nesting selectors
 
-現在のクラスやコンポーネント内のターゲット要素に、セレクターを入れ子にすることができます。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。
+現在のクラスやコンポーネント内のターゲット要素に、セレクターを入れ子にすることができます。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。
 
 ```js
 const useStyles = makeStyles({
@@ -204,7 +207,7 @@ To reduce the number of packages to install when using Material-UI, and to simpl
 
 To remove the need to systematically supply a theme, the default Material-UI theme is applied to the re-exported `makeStyles`, `styled`, `withTheme`, `useTheme`, and `withStyles` modules.
 
-例えば：
+For example:
 
 ```js
 // Re-export with a default theme

@@ -1,73 +1,78 @@
 ---
-title: Slider React component
+title: React Slider component
 components: Slider
+githubLabel: 'component: Slider'
+materialDesign: https://material.io/components/sliders
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#slider'
 ---
 
 # Slider
 
-<p class="description">Sliders allow users to make selections from a range of values.</p>
+<p class="description">Los deslizadores permiten a los usuarios hacer selecciones a partir de una gama de valores.</p>
 
-[Sliders](https://material.io/design/components/sliders.html) reflect a range of values along a bar, from which users may select a single value. They are ideal for adjusting settings such as volume, brightness, or applying image filters.
+[Sliders](https://material.io/design/components/sliders.html) reflect a range of values along a bar, from which users may select a single value. Son ideales para ajustar ajustes como volumen, brillo o aplicación de filtros de imagen.
 
-- 📦 [22 kB gzipped](/size-snapshot) (but only +8 kB when used together with other Material-UI components).
+- 📦 [22 kB gzipped](/size-snapshot) (pero solo +8 kB cuando se usa junto con otros componentes de Material-UI).
 
-## Continuous sliders
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
-Continuous sliders allow users to select a value along a subjective range.
+## Deslizadores continuos
+
+Los deslizadores continuos permiten a los usuarios seleccionar un valor a lo largo de un rango más amplio.
 
 {{"demo": "pages/components/slider/ContinuousSlider.js"}}
 
-## Discrete sliders
+## Deslizadores discretos
 
-Discrete sliders can be adjusted to a specific value by referencing its value indicator. By order of demos:
+Los deslizadores discretos pueden ser ajustados a un valor específico haciendo referencia a su indicador de valor. Por orden de demos:
 
-You can generate a mark for each step with `marks={true}`.
+Puedes generar una marca para cada paso con `marks={true}`.
 
 {{"demo": "pages/components/slider/DiscreteSlider.js"}}
 
-### Small steps
+### Pequeños pasos
 
-You can change the default step increment.
+Puede cambiar el incremento de paso por defecto.
 
 {{"demo": "pages/components/slider/DiscreteSliderSteps.js"}}
 
-### Custom marks
+### Marcas personalizadas
 
 You can have custom marks by providing a rich array to the `marks` prop.
 
 {{"demo": "pages/components/slider/DiscreteSliderMarks.js"}}
 
-### Restricted values
+### Valores restringidos
 
 You can restrict the selectable values to those provided with the `marks` prop with `step={null}`.
 
 {{"demo": "pages/components/slider/DiscreteSliderValues.js"}}
 
-### Label always visible
+### Etiqueta siempre visible
 
 You can force the thumb label to be always visible with `valueLabelDisplay="on"`.
 
 {{"demo": "pages/components/slider/DiscreteSliderLabel.js"}}
 
-## Range slider
+## Deslizador de rango
 
 The slider can be used to set the start and end of a range by supplying an array of values to the `value` prop.
 
 {{"demo": "pages/components/slider/RangeSlider.js"}}
 
-## Slider with input field
+## Deslizador con campo de entrada
 
 In this example an input allows a discrete value to be set.
 
 {{"demo": "pages/components/slider/InputSlider.js"}}
 
-## Customized sliders
+## Deslizadores personalizados
 
-Here are some examples of customizing the component. You can learn more about this in the [overrides documentation page](/customization/components/).
+Here are some examples of customizing the component. Puedes aprender más sobre esto en la [sección Personalizando Componentes de la documentación](/customization/components/).
 
 {{"demo": "pages/components/slider/CustomizedSlider.js"}}
 
-## Vertical sliders
+## Deslizadores verticales
 
 {{"demo": "pages/components/slider/VerticalSlider.js"}}
 

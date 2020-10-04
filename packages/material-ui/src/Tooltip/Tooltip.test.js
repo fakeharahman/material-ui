@@ -8,24 +8,14 @@ import {
   act,
   createClientRender,
   fireEvent,
+  screen,
+  simulatePointerDevice,
+  focusVisible,
+  programmaticFocusTriggersFocusVisible,
 } from 'test/utils';
 import { camelCase } from 'lodash/string';
 import Tooltip, { testReset } from './Tooltip';
 import Input from '../Input';
-
-function focusVisible(element) {
-  act(() => {
-    element.blur();
-    fireEvent.keyDown(document.activeElement || document.body, { key: 'Tab' });
-    element.focus();
-  });
-}
-
-function simulatePointerDevice() {
-  // first focus on a page triggers focus visible until a pointer event
-  // has been dispatched
-  document.dispatchEvent(new window.Event('pointerdown'));
-}
 
 describe('<Tooltip />', () => {
   /**
@@ -126,16 +116,124 @@ describe('<Tooltip />', () => {
       expect(queryByRole('tooltip')).to.equal(null);
     });
 
-    it('should be passed down to the child as a native title', () => {
-      const { getByRole } = render(
-        <Tooltip title="Hello World">
-          <button id="testChild" type="submit">
-            Hello World
+    it('should label the child when closed', () => {
+      render(
+        <Tooltip title="the title">
+          <button data-testid="target">The content</button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the title');
+      expect(target).not.to.have.attribute('title');
+    });
+
+    it('cannot label the child when closed with an exotic title', () => {
+      render(
+        <Tooltip title={<div>the title</div>}>
+          <button data-testid="target">the content</button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the content');
+      expect(target).not.to.have.attribute('title');
+    });
+
+    it('should label the child when open', () => {
+      render(
+        <Tooltip open title="the title">
+          <button data-testid="target">The content</button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the title');
+      expect(target).not.to.have.attribute('title');
+
+      // TODO: can be removed with popper@2.x
+      clock.runAll();
+    });
+
+    it('should label the child when open with an exotic title', () => {
+      render(
+        <Tooltip open title={<div>the title</div>}>
+          <button data-testid="target">The content</button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the title');
+      expect(target).not.to.have.attribute('title');
+
+      // TODO: can be removed with popper@2.x
+      clock.runAll();
+    });
+
+    it('can describe the child when closed', () => {
+      render(
+        <Tooltip describeChild title="the title">
+          <button aria-label="the label" data-testid="target">
+            The content
           </button>
         </Tooltip>,
       );
 
-      expect(getByRole('button')).to.have.attribute('title', 'Hello World');
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the label');
+      expect(target).toHaveAccessibleDescription('the title');
+      expect(target).to.have.attribute('title', 'the title');
+    });
+
+    it('cannot describe the child when closed with an exotic title', () => {
+      render(
+        <Tooltip describeChild title={<div>the title</div>}>
+          <button aria-label="the label" data-testid="target">
+            The content
+          </button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the label');
+      expect(target).toHaveAccessibleDescription('');
+      expect(target).not.to.have.attribute('title');
+    });
+
+    it('can describe the child when open', () => {
+      render(
+        <Tooltip describeChild open title="the title">
+          <button aria-label="the label" data-testid="target">
+            The content
+          </button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the label');
+      expect(target).toHaveAccessibleDescription('the title');
+      expect(target).not.to.have.attribute('title');
+
+      // TODO: can be removed with popper@2.x
+      clock.runAll();
+    });
+
+    it('can describe the child when open with an exotic title', () => {
+      render(
+        <Tooltip describeChild open title={<div>the title</div>}>
+          <button aria-label="the label" data-testid="target">
+            The content
+          </button>
+        </Tooltip>,
+      );
+
+      const target = screen.getByTestId('target');
+      expect(target).toHaveAccessibleName('the label');
+      expect(target).toHaveAccessibleDescription('the title');
+      expect(target).not.to.have.attribute('title');
+
+      // TODO: can be removed with popper@2.x
+      clock.runAll();
     });
   });
 
@@ -233,6 +331,31 @@ describe('<Tooltip />', () => {
     // TODO: Unclear why not running triggers microtasks but runAll does not trigger microtasks
     // can be removed once Popper#update is sync
     clock.runAll();
+  });
+
+  it('is dismissable by pressing Escape', () => {
+    const transitionTimeout = 0;
+    render(
+      <Tooltip enterDelay={0} TransitionProps={{ timeout: transitionTimeout }} title="Movie quote">
+        <button autoFocus>Hello, Dave!</button>
+      </Tooltip>,
+    );
+
+    expect(screen.getByRole('tooltip')).not.toBeInaccessible();
+
+    act(() => {
+      fireEvent.keyDown(
+        // We don't care about the target. Any Escape should dismiss the tooltip
+        // eslint-disable-next-line material-ui/disallow-active-element-as-key-event-target
+        document.activeElement,
+        { key: 'Escape' },
+      );
+    });
+    act(() => {
+      clock.tick(transitionTimeout);
+    });
+
+    expect(screen.queryByRole('tooltip')).to.equal(null);
   });
 
   describe('touch screen', () => {
@@ -727,7 +850,11 @@ describe('<Tooltip />', () => {
 
       getByRole('button').focus();
 
-      expect(queryByRole('tooltip')).to.equal(null);
+      if (programmaticFocusTriggersFocusVisible()) {
+        expect(queryByRole('tooltip')).not.to.equal(null);
+      } else {
+        expect(queryByRole('tooltip')).to.equal(null);
+      }
     });
 
     it('opens on focus-visible', () => {

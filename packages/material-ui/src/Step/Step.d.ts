@@ -36,14 +36,17 @@ export interface StepProps extends StandardProps<React.HTMLAttributes<HTMLDivEle
   disabled?: boolean;
   /**
    * Expand the step.
+   * @default false
    */
   expanded?: boolean;
   /**
    * The position of the step.
+   * The prop defaults to the value inherited from the parent Stepper component.
    */
   index?: number;
   /**
    * If `true`, the Step will be displayed as rendered last.
+   * The prop defaults to the value inherited from the parent Stepper component.
    */
   last?: boolean;
 }

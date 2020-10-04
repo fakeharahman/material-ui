@@ -1,10 +1,13 @@
 ---
 components: CssBaseline, ScopedCssBaseline
+githubLabel: 'component: CssBaseline'
 ---
 
 # Base de CSS
 
 <p class="description">Material-UI provee un componente llamado CssBaseline como un punto de partida elegante, simple y consistente para empezar a desarrollar.</p>
+
+[La función de estilo de la paleta](/system/palette/).
 
 ## Global reset
 
@@ -36,7 +39,7 @@ import MyApp from './MyApp';
 export default function MyApp() {
   return (
     <ScopedCssBaseline>
-      {/* The rest of your application */}
+      {/* El resto de tu aplicación */}
       <MyApp />
     </ScopedCssBaseline>
   );

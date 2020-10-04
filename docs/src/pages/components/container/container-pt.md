@@ -1,6 +1,7 @@
 ---
-title: Componente React para Contêiner
+title: React Container component
 components: Container
+githubLabel: 'component: Container'
 ---
 
 # Container
@@ -9,9 +10,11 @@ components: Container
 
 Enquanto os containers podem ser aninhados, a maioria dos leiautes não necessitam de um container aninhado.
 
+[A paleta](/system/palette/) com funções de estilo.
+
 ## Fluído
 
-A largura de um container fluído é limitada pelo valor da propriedade `maxWidth`.
+A fluid container width is bounded by the `maxWidth` prop value.
 
 {{"demo": "pages/components/container/SimpleContainer.js", "iframe": true, "defaultCodeOpen": false}}
 

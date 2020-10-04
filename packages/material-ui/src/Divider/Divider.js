@@ -48,6 +48,69 @@ export const styles = (theme) => ({
     alignSelf: 'stretch',
     height: 'auto',
   },
+  /* Styles applied to the root element if divider have text. */
+  withChildren: {
+    display: 'flex',
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+    border: 0,
+    '&::before, &::after': {
+      position: 'relative',
+      width: '100%',
+      borderColor: theme.palette.divider,
+      borderTop: 'thin',
+      borderLeft: 0,
+      borderRight: 0,
+      borderBottom: 0,
+      borderStyle: 'solid',
+      top: '50%',
+      content: '""',
+      transform: 'translateY(50%)',
+    },
+  },
+  /* Styles applied to the root element if divider have text and `orientation="vertical"`. */
+  withChildrenVertical: {
+    flexDirection: 'column',
+    '&::before, &::after': {
+      height: '100%',
+      top: '0%',
+      left: '50%',
+      borderColor: theme.palette.divider,
+      borderTop: 0,
+      borderLeft: 'thin',
+      borderStyle: 'solid',
+      transform: 'translateX(0%)',
+    },
+  },
+  /* Styles applied to the root element if `textAlign="right" orientation="horizontal"`. */
+  textAlignRight: {
+    '&::before': {
+      width: '90%',
+    },
+    '&::after': {
+      width: '10%',
+    },
+  },
+  /* Styles applied to the root element if `textAlign="left" orientation="horizontal"`. */
+  textAlignLeft: {
+    '&::before': {
+      width: '10%',
+    },
+    '&::after': {
+      width: '90%',
+    },
+  },
+  /* Styles applied to the span children element if `orientation="horizontal"`. */
+  wrapper: {
+    display: 'inline-block',
+    paddingLeft: theme.spacing(1.2),
+    paddingRight: theme.spacing(1.2),
+  },
+  /* Styles applied to the span children element if `orientation="vertical"`. */
+  wrapperVertical: {
+    paddingTop: theme.spacing(1.2),
+    paddingBottom: theme.spacing(1.2),
+  },
 });
 
 const Divider = React.forwardRef(function Divider(props, ref) {
@@ -55,11 +118,13 @@ const Divider = React.forwardRef(function Divider(props, ref) {
     absolute = false,
     classes,
     className,
-    component: Component = 'hr',
+    children,
+    component: Component = children ? 'div' : 'hr',
     flexItem = false,
     light = false,
     orientation = 'horizontal',
     role = Component !== 'hr' ? 'separator' : undefined,
+    textAlign = 'center',
     variant = 'fullWidth',
     ...other
   } = props;
@@ -73,6 +138,7 @@ const Divider = React.forwardRef(function Divider(props, ref) {
       light,
       orientation,
       role,
+      textAlign,
       variant,
     },
     'MuiDivider',
@@ -88,6 +154,10 @@ const Divider = React.forwardRef(function Divider(props, ref) {
           [classes.flexItem]: flexItem,
           [classes.light]: light,
           [classes.vertical]: orientation === 'vertical',
+          [classes.withChildren]: children,
+          [classes.withChildrenVertical]: children && orientation === 'vertical',
+          [classes.textAlignRight]: textAlign === 'right' && orientation !== 'vertical',
+          [classes.textAlignLeft]: textAlign === 'left' && orientation !== 'vertical',
         },
         themeVariantsClasses,
         className,
@@ -95,7 +165,17 @@ const Divider = React.forwardRef(function Divider(props, ref) {
       role={role}
       ref={ref}
       {...other}
-    />
+    >
+      {children ? (
+        <span
+          className={clsx(classes.wrapper, {
+            [classes.wrapperVertical]: orientation === 'vertical',
+          })}
+        >
+          {children}
+        </span>
+      ) : null}
+    </Component>
   );
 });
 
@@ -106,10 +186,11 @@ Divider.propTypes = {
   // ----------------------------------------------------------------------
   /**
    * Absolutely position the element.
+   * @default false
    */
   absolute: PropTypes.bool,
   /**
-   * @ignore
+   * The content of the component.
    */
   children: PropTypes.node,
   /**
@@ -128,14 +209,17 @@ Divider.propTypes = {
   /**
    * If `true`, a vertical divider will have the correct height when used in flex container.
    * (By default, a vertical divider will have a calculated height of `0px` if it is the child of a flex container.)
+   * @default false
    */
   flexItem: PropTypes.bool,
   /**
    * If `true`, the divider will have a lighter color.
+   * @default false
    */
   light: PropTypes.bool,
   /**
    * The divider orientation.
+   * @default 'horizontal'
    */
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   /**
@@ -143,7 +227,13 @@ Divider.propTypes = {
    */
   role: PropTypes.string,
   /**
+   * The text alignment.
+   * @default 'center'
+   */
+  textAlign: PropTypes.oneOf(['center', 'left', 'right']),
+  /**
    * The variant to use.
+   * @default 'fullWidth'
    */
   variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
     PropTypes.oneOf(['fullWidth', 'inset', 'middle']),

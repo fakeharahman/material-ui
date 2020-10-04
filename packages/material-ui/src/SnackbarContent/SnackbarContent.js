@@ -6,7 +6,7 @@ import Paper from '../Paper';
 import { emphasize } from '../styles/colorManipulator';
 
 export const styles = (theme) => {
-  const emphasis = theme.palette.type === 'light' ? 0.8 : 0.98;
+  const emphasis = theme.palette.mode === 'light' ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
   return {
@@ -82,6 +82,7 @@ SnackbarContent.propTypes = {
   message: PropTypes.node,
   /**
    * The ARIA role attribute of the element.
+   * @default 'alert'
    */
   role: PropTypes.string,
 };

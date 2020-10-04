@@ -1,7 +1,7 @@
 ---
-title: Card React component
+title: React Card component
 components: Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Collapse, Paper
-githubLabel: component: Card
+githubLabel: 'component: Card'
 materialDesign: https://material.io/components/cards
 ---
 
@@ -29,7 +29,7 @@ Set `variant="outlined"` to render an outlined card.
 
 ## Complex Interaction
 
-On desktop, card content can expand.
+On desktop, card content can expand. (Click the downward chevron to view the recipe.)
 
 {{"demo": "pages/components/cards/RecipeReviewCard.js", "bg": true}}
 

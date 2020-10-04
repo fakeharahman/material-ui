@@ -16,15 +16,6 @@ Cada separación (una llave) coincide con el ancho de pantalla *fijo* (un valor)
 - **lg,** grande: 1280px
 - **xl** extra-grande: 1920px
 
-These breakpoint values are used to determine breakpoint ranges. Un rango empieza desde el valor de separación inclusivo, hasta el siguiente valor de separación exclusivo:
-
-```js
-value         |0px     600px    960px    1280px   1920px
-key           |xs      sm       md       lg       xl
-screen width  |--------|--------|--------|--------|-------->
-range         |   xs   |   sm   |   md   |   lg   |   xl
-```
-
 These values can be [customized](#custom-breakpoints).
 
 ## CSS Media Queries
@@ -39,20 +30,10 @@ CSS media queries are the idiomatic approach to make your UI responsive. The the
 In the following demo, we change the background color (red, blue & green) based on the screen width.
 
 ```jsx
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('lg')]: {
-      backgroundColor: green[500],
-    },
-  },
-});
+value         |0px     600px    960px    1280px   1920px
+key           |xs      sm       md       lg       xl
+screen width  |--------|--------|--------|--------|-------->
+range         |   xs   |   sm   |   md   |   lg   |   xl
 ```
 
 {{"demo": "pages/customization/breakpoints/MediaQuery.js"}}
@@ -146,7 +127,34 @@ declare module "@material-ui/core/styles/createBreakpoints" {
 
 1. `key` (*String* | *Number*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
 
-#### Devuelve
+#### Regresa
+
+`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
+
+#### Ejemplos
+
+```js
+declare module "@material-ui/core/styles/createBreakpoints" {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    tablet: true; // adds the `tablet` breakpoint
+    laptop: true;
+    desktop: true;
+  }
+}
+```
+
+### `theme.breakpoints.down(key) => media query`
+
+#### Argumentos
+
+1. `key` (*String* | *Number*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+
+#### Regresa
 
 `media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than and including the screen size given by the breakpoint key.
 
@@ -165,13 +173,13 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.down(key) => media query`
+### `theme.breakpoints.only(key) => media query`
 
 #### Argumentos
 
-1. `key` (*String* | *Number*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+1. `key` (*String*): A breakpoint key (`xs`, `sm`, etc.).
 
-#### Devuelve
+#### Regresa
 
 `media query`: A media query string ready to be used with most styling solutions, which matches screen widths less than and including the screen size given by the breakpoint key.
 
@@ -191,13 +199,14 @@ const styles = theme => ({
 });
 ```
 
-### `theme.breakpoints.only(key) => media query`
+### `theme.breakpoints.between(start, end) => media query`
 
 #### Argumentos
 
-1. `key` (*String*): A breakpoint key (`xs`, `sm`, etc.).
+1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
+2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
 
-#### Devuelve
+#### Regresa
 
 `media query`: A media query string ready to be used with most styling solutions, which matches screen widths including the screen size given by the breakpoint key.
 
@@ -211,33 +220,6 @@ const styles = theme => ({
     //       [md, lg)
     //       [960px, 1280px)
     [theme.breakpoints.only('md')]: {
-      backgroundColor: 'red',
-    },
-  },
-});
-```
-
-### `theme.breakpoints.between(start, end) => media query`
-
-#### Argumentos
-
-1. `start` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-2. `end` (*String*): A breakpoint key (`xs`, `sm`, etc.) or a screen width number in pixels.
-
-#### Devuelve
-
-`media query`: A media query string ready to be used with most styling solutions, which matches screen widths greater than the screen size given by the breakpoint key in the first argument and less than the the screen size given by the breakpoint key in the second argument.
-
-#### Ejemplos
-
-```js
-const styles = theme => ({
-  root: {
-    backgroundColor: 'blue',
-    // Match [sm, md + 1)
-    //       [sm, lg)
-    //       [600px, 1280px[
-    [theme.breakpoints.between('sm', 'md')]: {
       backgroundColor: 'red',
     },
   },
@@ -258,10 +240,11 @@ Some implementation details that might be interesting to being aware of:
 
 #### Argumentos
 
-1. `options` (*Object* [optional]): 
-  - `options.withTheme` (*Boolean* [optional]): Default `false`. Provide the `theme` object to the component as a property.
-  - `options.noSSR` (*Boolean* [optional]): Default `false`. In order to perform the server-side rendering reconciliation, it needs to render twice. A first time with nothing and a second time with the children. This double pass rendering cycle comes with a drawback. The UI might blink. You can set this flag to `true` if you are not doing server-side rendering.
-  - `options.initialWidth` (*Breakpoint* [optional]): As `window.innerWidth` is unavailable on the server, we default to rendering an empty component during the first mount. You might want to use an heuristic to approximate the screen width of the client browser screen width. For instance, you could be using the user-agent or the client-hints. https://caniuse.com/#search=client%20hint, we also can set the initial width globally using [`custom properties`](/customization/globals/#default-props) on the theme. In order to set the initialWidth we need to pass a custom property with this shape:
+1. `options` (*Object* [optional]):
+
+- `options.withTheme` (*Boolean* [optional]): Default `false`. Provide the `theme` object to the component as a property.
+- `options.noSSR` (*Boolean* [optional]): Default `false`. In order to perform the server-side rendering reconciliation, it needs to render twice. A first time with nothing and a second time with the children. This double pass rendering cycle comes with a drawback. The UI might blink. You can set this flag to `true` if you are not doing server-side rendering.
+- `options.initialWidth` (*Breakpoint* [optional]): As `window.innerWidth` is unavailable on the server, we default to rendering an empty component during the first mount. You might want to use an heuristic to approximate the screen width of the client browser screen width. For instance, you could be using the user-agent or the client-hints. https://caniuse.com/#search=client%20hint, we also can set the initial width globally using [`custom properties`](/customization/globals/#default-props) on the theme. In order to set the initialWidth we need to pass a custom property with this shape:
 
 ```js
 const theme = createMuiTheme({
@@ -273,28 +256,34 @@ const theme = createMuiTheme({
     },
   },
 });
+      },
+    },
+  },
+});
 ```
 
 - `options.resizeInterval` (*Number* [optional]): Defaults to 166, corresponds to 10 frames at 60 Hz. Number of milliseconds to wait before responding to a screen resize event.
 
-#### Devuelve
+#### Regresa
 
 `higher-order component`: Should be used to wrap a component.
 
 #### Ejemplos
 
 ```jsx
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-
-function MyComponent(props) {
-  if (isWidthUp('sm', props.width)) {
-    return <span />
-  }
-
-  return <div />;
-}
-
-export default withWidth()(MyComponent);
+const theme = createMuiTheme({
+  props: {
+    // withWidth component ⚛️
+    MuiWithWidth: {
+      // Initial width property
+      initialWidth: 'lg', // Breakpoint being globally set 🌎!
+    },
+  },
+});
+      },
+    },
+  },
+});
 ```
 
 ## Default values

@@ -73,7 +73,6 @@ const customQueries = {
  */
 
 /**
- *
  * @param {React.ReactElement} element
  * @param {RenderOptions} [options]
  * @returns {import('@testing-library/react').RenderResult<typeof queries & typeof customQueries> & { setProps(props: object): void}}
@@ -148,11 +147,7 @@ export function createClientRender(globalOptions = {}) {
       throw error;
     }
 
-    // act to flush effect cleanup functions
-    // state updates during this phase are safe
-    await act(async () => {
-      await cleanup();
-    });
+    cleanup();
   });
 
   return function configuredClientRender(element, options = {}) {

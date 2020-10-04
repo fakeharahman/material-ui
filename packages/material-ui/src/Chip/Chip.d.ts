@@ -4,7 +4,7 @@ import { PropTypes } from '..';
 import { OverridableComponent, OverrideProps } from '../OverridableComponent';
 
 export interface ChipPropsVariantOverrides {}
-export type ChipVariantDefaults = Record<'default' | 'outlined', true>;
+export type ChipVariantDefaults = Record<'filled' | 'outlined', true>;
 
 export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
   props: P & {
@@ -45,8 +45,8 @@ export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
       deletableColorSecondary?: string;
       /** Styles applied to the root element if `variant="outlined"`. */
       outlined?: string;
-      /** Styles applied to the root element if `variant="default"`. */
-      default?: string;
+      /** Styles applied to the root element if `variant="filled"`. */
+      filled?: string;
       /** Styles applied to the root element if `variant="outlined"` and `color="primary"`. */
       outlinedPrimary?: string;
       /** Styles applied to the root element if `variant="outlined"` and `color="secondary"`. */
@@ -75,14 +75,16 @@ export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
       deleteIcon?: string;
       /** Styles applied to the `deleteIcon` element if `size="small"`. */
       deleteIconSmall?: string;
-      /** Styles applied to the deleteIcon element if `color="primary"` and `variant="default"`. */
+      /** Styles applied to the deleteIcon element if `color="primary"` and `variant="filled"`. */
       deleteIconColorPrimary?: string;
-      /** Styles applied to the deleteIcon element if `color="secondary"` and `variant="default"`. */
+      /** Styles applied to the deleteIcon element if `color="secondary"` and `variant="filled"`. */
       deleteIconColorSecondary?: string;
       /** Styles applied to the deleteIcon element if `color="primary"` and `variant="outlined"`. */
       deleteIconOutlinedColorPrimary?: string;
       /** Styles applied to the deleteIcon element if `color="secondary"` and `variant="outlined"`. */
       deleteIconOutlinedColorSecondary?: string;
+      /** Pseudo-class applied to the root element if keyboard focused. */
+      focusVisible?: string;
     };
     /**
      * If `true`, the chip will appear clickable, and will raise when pressed,
@@ -94,6 +96,7 @@ export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
     clickable?: boolean;
     /**
      * The color of the component. It supports those theme colors that make sense for this component.
+     * @default 'default'
      */
     color?: Exclude<PropTypes.Color, 'inherit'>;
     /**
@@ -102,6 +105,7 @@ export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
     deleteIcon?: React.ReactElement;
     /**
      * If `true`, the chip should be displayed in a disabled state.
+     * @default false
      */
     disabled?: boolean;
     /**
@@ -113,16 +117,18 @@ export interface ChipTypeMap<P = {}, D extends React.ElementType = 'div'> {
      */
     label?: React.ReactNode;
     /**
-     * Callback function fired when the delete icon is clicked.
+     * Callback fired when the delete icon is clicked.
      * If set, the delete icon will be shown.
      */
     onDelete?: React.EventHandler<any>;
     /**
      * The size of the chip.
+     * @default 'medium'
      */
     size?: 'small' | 'medium';
     /**
      * The variant to use.
+     * @default 'filled'
      */
     variant?: OverridableStringUnion<ChipVariantDefaults, ChipPropsVariantOverrides>;
   };

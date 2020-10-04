@@ -6,7 +6,7 @@ When the server receives the request, it renders the required component(s) into 
 
 ## Material-UI on the server
 
-Material-UI was designed from the ground-up with the constraint of rendering on the server, but it's up to you to make sure it's correctly integrated. It's important to provide the page with the required CSS, otherwise the page will render with just the HTML then wait for the CSS to be injected by the client, causing it to flicker (FOUC). To inject the style down to the client, we need to:
+Material-UI was designed from the ground-up with the constraint of rendering on the server, but it's up to you to make sure it's correctly integrated. It's important to provide the page with the required CSS, otherwise the page will render with just the HTML then wait for the CSS to be injected by the client, causing it to flicker (FOUC). It's important to provide the page with the required CSS, otherwise the page will render with just the HTML then wait for the CSS to be injected by the client, causing it to flicker (FOUC).
 
 1. Create a fresh, new [`ServerStyleSheets`](/styles/api/#serverstylesheets) instance on every request.
 2. Render the React tree with the server-side collector.
@@ -65,16 +65,13 @@ function renderFullPage(html, css) {
 }
 
 function handleRender(req, res) {
-  /* ... */
+  /* ...
+*/
 }
 
 const app = express();
 
 // Isso é acionado toda vez que o servidor recebe uma solicitação.
-app.use(handleRender);
-
-const port = 3000;
-app.listen(port);
 ```
 
 ### Handling the Request
@@ -99,6 +96,14 @@ function handleRender(req, res) {
   const sheets = new ServerStyleSheets();
 
   // Render the component to a string.
+  res.send(renderFullPage(html, css));
+}
+
+const app = express();
+
+app.use('/build', express.static('build'));
+
+// This is fired every time the server-side receives a request.
   const html = ReactDOMServer.renderToString(
     sheets.collect(
       <ThemeProvider theme={theme}>
@@ -108,21 +113,23 @@ function handleRender(req, res) {
   );
 
   // Grab the CSS from the sheets.
-  const css = sheets.toString();
+  import express from 'express';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
+import App from './App';
+import theme from './theme';
 
-  // Send the rendered page back to the client.
-  res.send(renderFullPage(html, css));
+function handleRender(req, res) {
+  const sheets = new ServerStyleSheets();
+
+  // Render the component to a string.
+*/
 }
 
 const app = express();
 
-app.use('/build', express.static('build'));
-
-// This is fired every time the server-side receives a request.
-app.use(handleRender);
-
-const port = 3000;
-app.listen(port);
+// Isso é acionado toda vez que o servidor recebe uma solicitação.
 ```
 
 ### Inject Initial Component HTML and CSS
@@ -181,9 +188,9 @@ ReactDOM.hydrate(<Main />, document.querySelector('#root'));
 
 We host different reference implementations which you can find in the [GitHub repository](https://github.com/mui-org/material-ui) under the [`/examples`](https://github.com/mui-org/material-ui/tree/master/examples) folder:
 
-- [The reference implementation of this tutorial](https://github.com/mui-org/material-ui/tree/master/examples/ssr)
-- [Gatsby](https://github.com/mui-org/material-ui/tree/master/examples/gatsby)
-- [Next.js](https://github.com/mui-org/material-ui/tree/master/examples/nextjs)
+- [The reference implementation of this tutorial](https://github.com/mui-org/material-ui/tree/next/examples/ssr)
+- [Gatsby](https://github.com/mui-org/material-ui/tree/next/examples/gatsby)
+- https://github.com/mui-org/material-ui/tree/master/examples/nextjs
 
 ## Troubleshooting
 

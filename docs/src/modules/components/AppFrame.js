@@ -32,6 +32,7 @@ import Notifications from 'docs/src/modules/components/Notifications';
 import MarkdownLinks from 'docs/src/modules/components/MarkdownLinks';
 import { LANGUAGES_LABEL } from 'docs/src/modules/constants';
 import { pathnameToLanguage } from 'docs/src/modules/utils/helpers';
+import RtlContext from 'docs/src/modules/utils/RtlContext';
 import { useChangeTheme } from 'docs/src/modules/components/ThemeContext';
 import PageContext from 'docs/src/modules/components/PageContext';
 
@@ -110,8 +111,8 @@ const styles = (theme) => ({
     },
   },
   appBar: {
-    color: theme.palette.type === 'light' ? null : '#fff',
-    backgroundColor: theme.palette.type === 'light' ? null : theme.palette.background.level2,
+    color: theme.palette.mode === 'light' ? null : '#fff',
+    backgroundColor: theme.palette.mode === 'light' ? null : theme.palette.background.level2,
     transition: theme.transitions.create('width'),
   },
   language: {
@@ -147,6 +148,7 @@ function AppFrame(props) {
   const theme = useTheme();
   const t = useSelector((state) => state.options.t);
   const userLanguage = useSelector((state) => state.options.userLanguage);
+  const { rtl, setRtl } = React.useContext(RtlContext);
 
   const crowdInLocale = LOCALES[userLanguage] || userLanguage;
 
@@ -165,17 +167,19 @@ function AppFrame(props) {
   const handleDrawerOpen = () => {
     setMobileOpen(true);
   };
-  const handleDrawerClose = () => {
+  const handleDrawerClose = React.useCallback(() => {
     setMobileOpen(false);
-  };
+  }, []);
 
   const changeTheme = useChangeTheme();
   const handleTogglePaletteType = () => {
-    const paletteType = theme.palette.type === 'light' ? 'dark' : 'light';
+    const paletteMode = theme.palette.mode === 'light' ? 'dark' : 'light';
 
-    changeTheme({ paletteType });
+    changeTheme({ paletteMode });
   };
   const handleToggleDirection = () => {
+    setRtl(!rtl);
+    // TODO: remove in v5 after the style engine is moved to emotion
     changeTheme({ direction: theme.direction === 'ltr' ? 'rtl' : 'ltr' });
   };
 
@@ -221,7 +225,6 @@ function AppFrame(props) {
               color="inherit"
               aria-owns={languageMenu ? 'language-menu' : undefined}
               aria-haspopup="true"
-              aria-label={t('changeLanguage')}
               onClick={handleLanguageIconClick}
               data-ga-event-category="header"
               data-ga-event-action="language"
@@ -280,7 +283,6 @@ function AppFrame(props) {
           <Tooltip title={t('editWebsiteColors')} enterDelay={300}>
             <IconButton
               color="inherit"
-              aria-label={t('editWebsiteColors')}
               component={Link}
               naked
               href="/customization/color/#playground"
@@ -295,7 +297,6 @@ function AppFrame(props) {
               component="a"
               color="inherit"
               href="https://github.com/mui-org/material-ui"
-              aria-label={t('github')}
               data-ga-event-category="header"
               data-ga-event-action="github"
             >
@@ -306,11 +307,10 @@ function AppFrame(props) {
             <IconButton
               color="inherit"
               onClick={handleTogglePaletteType}
-              aria-label={t('toggleTheme')}
               data-ga-event-category="header"
               data-ga-event-action="dark"
             >
-              {theme.palette.type === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+              {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
             </IconButton>
           </Tooltip>
           <Tooltip title={t('toggleRTL')} key={theme.direction} enterDelay={300}>
@@ -318,7 +318,6 @@ function AppFrame(props) {
               edge="end"
               color="inherit"
               onClick={handleToggleDirection}
-              aria-label={t('toggleRTL')}
               data-ga-event-category="header"
               data-ga-event-action="rtl"
             >

@@ -2,7 +2,7 @@
 
 <p class="description">无论您是否使用了 Material-UI 组件，都可以在应用中使用 Material-UI 的样式方案。</p>
 
-Material-UI 旨在为构建动态的 UI 提供扎实的基础。 为了构造更加清晰的结构，**我们单独发布了 Material-UI 组件中使用的样式方案**，它将作为一个 `@material-ui/styles` 的依赖包存在。 @material-ui/styles 并不是你唯一的选择，Material-UI 也可以与其他主流样式方案[彼此协作](/guides/interoperability/)。
+Material-UI 旨在为构建动态的 UI 提供扎实的基础。 Material-UI 旨在为构建动态的 UI 提供扎实的基础。 @material-ui/styles 并不是你唯一的选择，Material-UI 也可以与其他主流样式方案[彼此协作](/guides/interoperability/)。
 
 ## 为什么要使用 Material-UI 的样式方案呢？
 
@@ -11,6 +11,9 @@ Material-UI 旨在为构建动态的 UI 提供扎实的基础。 为了构造更
 Material-UI 的样式方案来自于许多其他 CSS-in-JS 库的启发，例如 [styled-components](https://www.styled-components.com/) 和 [emotion](https://emotion.sh/)。
 
 - 💅你可以期待和 styled-components [一样的优势](https://www.styled-components.com/docs/basics#motivation)。
+
+<!-- #default-branch-switch -->
+
 - 🚀它的运行[超快的](https://github.com/mui-org/material-ui/blob/next/packages/material-ui-benchmark/README.md#material-uistyles)。
 - 🧩你可以通过一个[插件](https://github.com/cssinjs/jss/blob/master/docs/plugins.md) API 来扩展。
 - ⚡️它使用 [JSS](https://github.com/cssinjs/jss) 为其核心 —— 一个 [高性能的](https://github.com/cssinjs/jss/blob/master/docs/performance.md) JavaScript 到 CSS 的编译器，它在运行时和服务器端编译。
@@ -20,7 +23,7 @@ Material-UI 的样式方案来自于许多其他 CSS-in-JS 库的启发，例如
 
 > 我们将 `@material-ui/styles` 导出为 `@material-ui/core/styles` ——若你想和 Material-UI 分开使用，只需单独安装它。
 
-下载并保存到你的 `package.json` 依赖包里，请运行:
+若想安装并写入您的 `package.json` 依赖包，请运行以下命令：
 
 ```sh
 // 用 npm 安装
@@ -186,8 +189,8 @@ function MyComponent() {
 在以下压力测试中，您可以实时更新*主题颜色*和 *background-color 属性*：
 
 ```js
-const useStyles = makeStyles(theme => ({
-  root: props => ({
+const useStyles = makeStyles((theme) => ({
+  root: (props) => ({
     backgroundColor: props.backgroundColor,
     color: theme.color,
   }),
@@ -204,7 +207,7 @@ Material-UI 的样式是由 [@material-ui/styles](https://www.npmjs.com/package/
 
 这样一来，无需系统性的提供一个主题，默认的 Material-UI 主题被应用到重新导出的 `makeStyles`，`styled`，`withTheme`，`useTheme`，和 `withStyles` 模块当中。
 
-就像这样：
+例如:
 
 ```js
 // 重新与默认的主题导出

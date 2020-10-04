@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/core/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 
 // ISO 3166-1 alpha-2
@@ -39,11 +39,11 @@ export default function CountrySelect() {
       }}
       autoHighlight
       getOptionLabel={(option) => option.label}
-      renderOption={(option) => (
-        <React.Fragment>
+      renderOption={(props, option) => (
+        <li {...props}>
           <span>{countryToFlag(option.code)}</span>
           {option.label} ({option.code}) +{option.phone}
-        </React.Fragment>
+        </li>
       )}
       renderInput={(params) => (
         <TextField

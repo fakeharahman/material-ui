@@ -1,11 +1,15 @@
 ---
-title: Breadcrumbs
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
+githubLabel: 'component: Breadcrumbs'
+waiAria: 'https://www.w3.org/TR/wai-aria-practices/#breadcrumb'
 ---
 
 # Хлебные крошки
 
 <p class="description">Хлебные крошки позволяют пользователям выбирать из диапазона значений.</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Простые хлебные крошки
 

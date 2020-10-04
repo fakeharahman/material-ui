@@ -1,7 +1,7 @@
 ---
-title: Dialog React component
+title: React Dialog component
 components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide
-githubLabel: component: Dialog
+githubLabel: 'component: Dialog'
 materialDesign: https://material.io/components/dialogs
 waiAria: https://www.w3.org/TR/wai-aria-practices/#dialog_modal
 ---
@@ -90,7 +90,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function MyComponent() {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return <Dialog fullScreen={fullScreen} />;
 }

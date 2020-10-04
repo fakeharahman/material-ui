@@ -1,11 +1,14 @@
 ---
-title: Componente React para Emblemas
+title: React Badge component
 components: Badge
+githubLabel: 'component: Badge'
 ---
 
-# Emblema
+# Badge
 
 <p class="description">O componente <code>Badge</code> gera um pequeno emblema no canto superior direito de seu(s) filho(s).</p>
+
+{{"component": "modules/components/ComponentLinkHeader.js"}}
 
 ## Emblemas básicos
 

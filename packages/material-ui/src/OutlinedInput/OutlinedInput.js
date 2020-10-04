@@ -8,7 +8,7 @@ import withStyles from '../styles/withStyles';
 
 export const styles = (theme) => {
   const borderColor =
-    theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
+    theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
 
   return {
     /* Styles applied to the root element. */
@@ -73,9 +73,9 @@ export const styles = (theme) => {
     input: {
       padding: '16.5px 14px',
       '&:-webkit-autofill': {
-        WebkitBoxShadow: theme.palette.type === 'light' ? null : '0 0 0 100px #266798 inset',
-        WebkitTextFillColor: theme.palette.type === 'light' ? null : '#fff',
-        caretColor: theme.palette.type === 'light' ? null : '#fff',
+        WebkitBoxShadow: theme.palette.mode === 'light' ? null : '0 0 0 100px #266798 inset',
+        WebkitTextFillColor: theme.palette.mode === 'light' ? null : '#fff',
+        caretColor: theme.palette.mode === 'light' ? null : '#fff',
         borderRadius: 'inherit',
       },
     },
@@ -162,6 +162,7 @@ OutlinedInput.propTypes = {
   classes: PropTypes.object,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
+   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
    */
   color: PropTypes.oneOf(['primary', 'secondary']),
   /**
@@ -170,6 +171,7 @@ OutlinedInput.propTypes = {
   defaultValue: PropTypes.any,
   /**
    * If `true`, the `input` element will be disabled.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   disabled: PropTypes.bool,
   /**
@@ -177,12 +179,13 @@ OutlinedInput.propTypes = {
    */
   endAdornment: PropTypes.node,
   /**
-   * If `true`, the input will indicate an error. This is normally obtained via context from
-   * FormControl.
+   * If `true`, the input will indicate an error.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   error: PropTypes.bool,
   /**
    * If `true`, the input will take up the full width of its container.
+   * @default false
    */
   fullWidth: PropTypes.bool,
   /**
@@ -192,10 +195,12 @@ OutlinedInput.propTypes = {
   /**
    * The component used for the `input` element.
    * Either a string to use a HTML element or a component.
+   * @default 'input'
    */
   inputComponent: PropTypes.elementType,
   /**
    * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes) applied to the `input` element.
+   * @default {}
    */
   inputProps: PropTypes.object,
   /**
@@ -210,11 +215,13 @@ OutlinedInput.propTypes = {
   /**
    * The width of the label. Is ignored if `label` is provided. Prefer `label`
    * if the input label appears with a strike through.
+   * @default 0
    */
   labelWidth: PropTypes.number,
   /**
    * If `dense`, will adjust vertical spacing. This is normally obtained via context from
    * FormControl.
+   * The prop defaults to the value (`'none'`) inherited from the parent FormControl component.
    */
   margin: PropTypes.oneOf(['dense', 'none']),
   /**
@@ -227,6 +234,7 @@ OutlinedInput.propTypes = {
   minRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * If `true`, a textarea element will be rendered.
+   * @default false
    */
   multiline: PropTypes.bool,
   /**
@@ -255,6 +263,7 @@ OutlinedInput.propTypes = {
   readOnly: PropTypes.bool,
   /**
    * If `true`, the `input` element will be required.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   required: PropTypes.bool,
   /**
@@ -267,6 +276,7 @@ OutlinedInput.propTypes = {
   startAdornment: PropTypes.node,
   /**
    * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
+   * @default 'text'
    */
   type: PropTypes.string,
   /**

@@ -67,6 +67,7 @@ export interface InputBaseProps
   };
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
+   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
    */
   color?: 'primary' | 'secondary';
   /**
@@ -75,6 +76,7 @@ export interface InputBaseProps
   defaultValue?: unknown;
   /**
    * If `true`, the `input` element will be disabled.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   disabled?: boolean;
   /**
@@ -82,12 +84,13 @@ export interface InputBaseProps
    */
   endAdornment?: React.ReactNode;
   /**
-   * If `true`, the input will indicate an error. This is normally obtained via context from
-   * FormControl.
+   * If `true`, the input will indicate an error.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   error?: boolean;
   /**
    * If `true`, the input will take up the full width of its container.
+   * @default false
    */
   fullWidth?: boolean;
   /**
@@ -97,10 +100,12 @@ export interface InputBaseProps
   /**
    * The component used for the `input` element.
    * Either a string to use a HTML element or a component.
+   * @default 'input'
    */
   inputComponent?: React.ElementType<InputBaseComponentProps>;
   /**
    * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes) applied to the `input` element.
+   * @default {}
    */
   inputProps?: InputBaseComponentProps;
   /**
@@ -110,10 +115,12 @@ export interface InputBaseProps
   /**
    * If `dense`, will adjust vertical spacing. This is normally obtained via context from
    * FormControl.
+   * The prop defaults to the value (`'none'`) inherited from the parent FormControl component.
    */
   margin?: 'dense' | 'none';
   /**
    * If `true`, a textarea element will be rendered.
+   * @default false
    */
   multiline?: boolean;
   /**
@@ -147,6 +154,7 @@ export interface InputBaseProps
   readOnly?: boolean;
   /**
    * If `true`, the `input` element will be required.
+   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   required?: boolean;
   renderSuffix?: (state: {
@@ -176,6 +184,7 @@ export interface InputBaseProps
   startAdornment?: React.ReactNode;
   /**
    * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
+   * @default 'text'
    */
   type?: string;
   /**
